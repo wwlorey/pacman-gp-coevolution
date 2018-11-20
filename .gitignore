@@ -1,0 +1,10 @@
+__pycache__
+*.aux
+*.bbl
+*.blg
+*.log
+*.toc
+*.swp
+*.swo
+.vscode
+

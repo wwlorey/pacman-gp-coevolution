@@ -1,0 +1,57 @@
+ ,BONUS_small_multi_controller, BONUS_small
+mean, 142.96666666666667, 101.1
+variance, 439.96555555555557, 408.8233333333334
+standard deviation, 20.975355910104494, 20.21938014216394
+observations, 30, 30
+df, 29, 29
+F, 1.0761752563590357
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 7.738691619777811
+P two-tail, 1.694665580406777e-10
+t Critical two-tail, 2.0395
+BONUS_small_multi_controller is statistically better than BONUS_small
+
+
+
+ ,BONUS_small_multi_controller, small
+mean, 142.96666666666667, 101.0
+variance, 439.96555555555557, 494.46666666666664
+standard deviation, 20.975355910104494, 22.23660645572221
+observations, 30, 30
+df, 29, 29
+F, 0.8897779875061795
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 7.393150913824469
+P two-tail, 6.520299920112773e-10
+t Critical two-tail, 2.0395
+BONUS_small_multi_controller is statistically better than small
+
+
+
+ ,BONUS_small, small
+mean, 101.1, 101.0
+variance, 408.8233333333334, 494.46666666666664
+standard deviation, 20.21938014216394, 22.23660645572221
+observations, 30, 30
+df, 29, 29
+F, 0.8267965484697318
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 0.01791782942177858
+P two-tail, 0.9857664534615012
+t Critical two-tail, 2.0395
+Nether small nor BONUS_small is statistically better
+
+
+
