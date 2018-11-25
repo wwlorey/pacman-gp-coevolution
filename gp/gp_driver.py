@@ -63,12 +63,10 @@ class GPDriver:
             world = gpac_world_class.GPacWorld(self.config)
             game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, self.get_num_adj_walls(world, world.pacman_coords[0]))
             
-            # BONUS2
             pacman_conts = [pacman_cont_class.PacmanController(self.config) for _ in range(int(self.config.settings['num pacmen']))]
             ghosts_cont = ghosts_cont_class.GhostsController(self.config)
             game_state.update_walls(world.wall_coords)
 
-            # BONUS2
             self.population.append(gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghosts_cont))
 
 
@@ -95,7 +93,6 @@ class GPDriver:
         parsimony pressure.
         """
         for individual in self.population:
-            # BONUS2
             avg_num_nodes = 0
 
             for pacman_cont in individual.pacman_conts: 
@@ -191,7 +188,6 @@ class GPDriver:
             """Performs sub-tree crossover on parent_a and parent_b returning the child tree."""
 
             def crossover_recursive(receiver_index, donator_index):
-                # BONUS2
                 if receiver_index < len(child_pacman_conts[cont_index].state_evaluator) and donator_index < len(parent_pacman_cont.state_evaluator):
                     return
                 
@@ -200,7 +196,6 @@ class GPDriver:
                 crossover_recursive(child_pacman_conts[cont_index].state_evaluator.get_right_child_index(receiver_index), parent_pacman_cont.state_evaluator.get_right_child_index(donator_index))
 
 
-            # BONUS2
             child_pacman_conts = [None] * int(self.config.settings['num pacmen'])
             for cont_index in range(int(self.config.settings['num pacmen'])):
                 # Choose a random node (crossover point) from each state evaluator node list
@@ -221,13 +216,11 @@ class GPDriver:
             world = gpac_world_class.GPacWorld(self.config)
             game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, self.get_num_adj_walls(world, world.pacman_coords[0]))
             
-            # BONUS2
             pacman_conts = child_pacman_conts
             
             ghosts_cont = parent_a.ghosts_cont
             game_state.update_walls(world.wall_coords)
 
-            # BONUS2
             child = gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghosts_cont)
             return child
 
@@ -257,7 +250,6 @@ class GPDriver:
 
 
         for child in self.children:
-            # BONUS2
             for pacman_cont in child.pacman_conts:
                 if random.random() < float(self.config.settings['mutation rate']):
                     # Choose mutation node
@@ -325,7 +317,6 @@ class GPDriver:
 
         self.update_game_state(individual)
 
-        # BONUS2
         for pacman_index, pacman_cont in enumerate(individual.pacman_conts):
             individual.world.move_pacmen(pacman_cont.get_move(individual.game_state, pacman_index), pacman_index)
 
