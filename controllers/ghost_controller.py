@@ -5,9 +5,9 @@ import random
 import world.coordinate as coord_class
 
 
-class GhostsController(base_controller_class.BaseController):
+class GhostController(base_controller_class.BaseController):
     def __init__(self, config):
-        """Initializes the GhostsController class."""
+        """Initializes the GhostController class."""
         self.config = config
 
         super(base_controller_class.BaseController, self).__init__()
@@ -16,7 +16,7 @@ class GhostsController(base_controller_class.BaseController):
             d.Direction.RIGHT]
 
 
-    def get_move(self, ghost_id, game_state):
+    def get_move(self, ghost_index, game_state):
         """Produces a move based on game_state.
 
         Note: for assignment 2b, the move is randomized.
@@ -26,7 +26,7 @@ class GhostsController(base_controller_class.BaseController):
             direction_to_try = random.choice(self.POSSIBLE_MOVES)
 
             # Determine if this direction is valid
-            new_coord = coord_class.Coordinate(game_state.ghost_coords[ghost_id].x, game_state.ghost_coords[ghost_id].y)
+            new_coord = coord_class.Coordinate(game_state.ghost_coords[ghost_index].x, game_state.ghost_coords[ghost_index].y)
             if direction_to_try == d.Direction.UP:
                 new_coord.y += 1
 

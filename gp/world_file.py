@@ -23,8 +23,8 @@ class WorldFile:
         for c in walls:
             self.save_triplet('w', c.x, c.y)
 
-        for ghost_id in range(len(ghosts)):
-            self.save_triplet(ghost_id + 1, ghosts[ghost_id].x, ghosts[ghost_id].y)
+        for ghost_index in range(len(ghosts)):
+            self.save_triplet(ghost_index + 1, ghosts[ghost_index].x, ghosts[ghost_index].y)
 
         for c in pills:
             self.save_triplet('p', c.x, c.y)
@@ -37,8 +37,8 @@ class WorldFile:
         for pacman in pacmen:
             self.save_triplet('m', pacman.x, pacman.y)     
 
-        for ghost_id in range(len(ghosts)):
-            self.save_triplet(ghost_id + 1, ghosts[ghost_id].x, ghosts[ghost_id].y)
+        for ghost_index in range(len(ghosts)):
+            self.save_triplet(ghost_index + 1, ghosts[ghost_index].x, ghosts[ghost_index].y)
 
         for c in fruit:
             # A fruit coordinate should only be written once

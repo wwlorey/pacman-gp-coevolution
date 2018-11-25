@@ -1,5 +1,5 @@
 import controllers.game_state as game_state_class
-import controllers.ghosts_controller as ghosts_cont_class
+import controllers.ghost_controller as ghost_cont_class
 import controllers.pacman_controller as pacman_cont_class
 import controllers.tree as tree
 import copy
@@ -25,6 +25,12 @@ class GPDriver:
         self.population_size = int(self.config.settings['mu'])
         self.child_population_size = int(self.config.settings['lambda'])
         self.parent_population_size = int(self.config.settings['num parents'])
+
+        self.num_pacmen = int(self.config.settings['num pacmen'])
+        self.num_ghosts = int(self.config.settings['num ghosts'])
+
+        self.use_single_pacman_cont = self.config.settings.get_bool('use single pacman controller')
+        self.use_single_ghost_cont = self.config.settings.get_bool('use single ghost controller')
 
         self.run_count = 1
         self.eval_count = 0
@@ -63,11 +69,21 @@ class GPDriver:
             world = gpac_world_class.GPacWorld(self.config)
             game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, self.get_num_adj_walls(world, world.pacman_coords[0]))
             
-            pacman_conts = [pacman_cont_class.PacmanController(self.config) for _ in range(int(self.config.settings['num pacmen']))]
-            ghosts_cont = ghosts_cont_class.GhostsController(self.config)
+            if self.use_single_pacman_cont:
+                pacman_conts = [pacman_cont_class.PacmanController(self.config)]
+
+            else:
+                pacman_conts = [pacman_cont_class.PacmanController(self.config) for _ in range(self.num_pacmen)]
+
+            if self.use_single_ghost_cont:
+                ghost_conts = [ghost_cont_class.GhostController(self.config)]
+
+            else:
+                ghost_conts = [ghost_cont_class.GhostController(self.config) for _ in range(self.num_pacmen)]
+
             game_state.update_walls(world.wall_coords)
 
-            self.population.append(gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghosts_cont))
+            self.population.append(gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghost_conts))
 
 
     def end_run(self):
@@ -98,10 +114,16 @@ class GPDriver:
             for pacman_cont in individual.pacman_conts: 
                 avg_num_nodes += int(sum([pacman_cont.get_num_nodes() for individual in self.population]) / self.population_size)
 
+            for ghost_cont in individual.ghost_conts: 
+                avg_num_nodes += int(sum([ghost_cont.get_num_nodes() for individual in self.population]) / self.population_size)
+
             num_nodes = 0
 
             for pacman_cont in individual.pacman_conts:
                 num_nodes += pacman_cont.get_num_nodes()
+
+            for ghost_cont in individual.ghost_conts:
+                num_nodes += ghost_cont.get_num_nodes()
 
             if  num_nodes > avg_num_nodes:
                 individual.fitness /= int(float(self.config.settings['p parsimony coefficient']) * (num_nodes - avg_num_nodes))
@@ -122,7 +144,9 @@ class GPDriver:
 
 
     def select_parents(self):
-        """Chooses which parents from the population will breed.
+        """TODO: expand for ghosts
+        
+        Chooses which parents from the population will breed.
 
         Depending on the parent selection configuration, one of the three following 
         methods is used to select parents:
@@ -179,7 +203,9 @@ class GPDriver:
                  
 
     def recombine(self):
-        """Breeds lambda (offspring pool size) children using sub-tree crossover 
+        """TODO: expand for ghosts
+
+        Breeds lambda (offspring pool size) children using sub-tree crossover 
         from the existing parent population. The resulting children are stored in 
         self.children.
         """
@@ -196,8 +222,8 @@ class GPDriver:
                 crossover_recursive(child_pacman_conts[cont_index].state_evaluator.get_right_child_index(receiver_index), parent_pacman_cont.state_evaluator.get_right_child_index(donator_index))
 
 
-            child_pacman_conts = [None] * int(self.config.settings['num pacmen'])
-            for cont_index in range(int(self.config.settings['num pacmen'])):
+            child_pacman_conts = [None] * self.num_pacmen
+            for cont_index in range(self.num_pacmen):
                 # Choose a random node (crossover point) from each state evaluator node list
                 crossover_node_a = parent_a.pacman_conts[cont_index].state_evaluator[random.choices([n for n in parent_a.pacman_conts[cont_index].state_evaluator if n.value])[0].index]
                 crossover_node_b = parent_b.pacman_conts[cont_index].state_evaluator[random.choices([n for n in parent_b.pacman_conts[cont_index].state_evaluator if n.value])[0].index]
@@ -218,10 +244,10 @@ class GPDriver:
             
             pacman_conts = child_pacman_conts
             
-            ghosts_cont = parent_a.ghosts_cont
+            ghost_conts = parent_a.ghost_conts
             game_state.update_walls(world.wall_coords)
 
-            child = gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghosts_cont)
+            child = gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghost_conts)
             return child
 
 
@@ -238,7 +264,9 @@ class GPDriver:
         
 
     def mutate(self):
-        """Probabilistically performs sub-tree mutation on each child in the child population."""
+        """TODO: expand for ghosts
+        
+        Probabilistically performs sub-tree mutation on each child in the child population."""
 
         def nullify(state_evaluator, node):
             """Recursively sets this node and its branch to the None node."""
@@ -263,7 +291,9 @@ class GPDriver:
         
 
     def select_for_survival(self):
-        """Survivors are selected based on the following configurable methods:
+        """TODO: expand for ghosts
+        
+        Survivors are selected based on the following configurable methods:
             1. k-tournament selection without replacement
             2. Truncation
 
@@ -317,11 +347,21 @@ class GPDriver:
 
         self.update_game_state(individual)
 
-        for pacman_index, pacman_cont in enumerate(individual.pacman_conts):
-            individual.world.move_pacmen(pacman_cont.get_move(individual.game_state, pacman_index), pacman_index)
+        if self.use_single_pacman_cont:
+            for pacman_index in range(self.num_pacmen):
+                individual.world.move_pacman(individual.pacman_conts[0].get_move(individual.game_state, pacman_index), pacman_index)
+        
+        else:
+            for pacman_index, pacman_cont in enumerate(individual.pacman_conts):
+                individual.world.move_pacman(pacman_cont.get_move(individual.game_state, pacman_index), pacman_index)
 
-        for ghost_id in range(len(individual.world.ghost_coords)):
-            individual.world.move_ghost(ghost_id, individual.ghosts_cont.get_move(ghost_id, individual.game_state))
+        if self.use_single_ghost_cont:
+            for ghost_index in range(self.num_ghosts):
+                individual.world.move_ghost(individual.ghost_conts[0].get_move(individual.game_state, ghost_index), ghost_index)
+
+        else:
+            for ghost_index, ghost_cont in enumerate(individual.ghost_conts):
+                individual.world.move_ghost(ghost_cont.get_move(individual.game_state, ghost_index), ghost_index)
 
         # Update time remaining
         individual.world.time_remaining -= 1

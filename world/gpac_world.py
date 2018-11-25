@@ -158,8 +158,8 @@ class GPacWorld:
                 self.pill_coords.add(c)
                 break
 
-
-    def move_pacmen(self, direction, pacman_index):
+    
+    def move_pacman(self, direction, pacman_index):
         """Moves the pacman in self.pacman_coords at pacman_index in direction, where the direction 
         leads pacman to a valid location.
 
@@ -192,15 +192,15 @@ class GPacWorld:
         self.pacman_coords[pacman_index] = coord_class.Coordinate(new_coord.x, new_coord.y)
 
 
-    def move_ghost(self, ghost_id, direction):
+    def move_ghost(self, direction, ghost_index):
         """Moves the given ghost in direction, where direction is leads the
         ghost to a valid location.
         """
-        if ghost_id >= len(self.ghost_coords):
+        if ghost_index >= len(self.ghost_coords):
             # This ghost does not exist
             return
 
-        new_coord = coord_class.Coordinate(self.ghost_coords[ghost_id].x, self.ghost_coords[ghost_id].y)
+        new_coord = coord_class.Coordinate(self.ghost_coords[ghost_index].x, self.ghost_coords[ghost_index].y)
         
         # Adjust new_coord depending on pacman's desired direction
         if direction == d.Direction.UP:
@@ -215,8 +215,8 @@ class GPacWorld:
         elif direction == d.Direction.RIGHT:
             new_coord.x += 1
         
-        self.prev_ghost_coords[ghost_id] = coord_class.Coordinate(self.ghost_coords[ghost_id].x, self.ghost_coords[ghost_id].y)
-        self.ghost_coords[ghost_id] = coord_class.Coordinate(new_coord.x, new_coord.y)
+        self.prev_ghost_coords[ghost_index] = coord_class.Coordinate(self.ghost_coords[ghost_index].x, self.ghost_coords[ghost_index].y)
+        self.ghost_coords[ghost_index] = coord_class.Coordinate(new_coord.x, new_coord.y)
 
 
     def check_game_over(self):
