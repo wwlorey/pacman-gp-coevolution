@@ -90,7 +90,6 @@ class PacmanController(base_controller_class.BaseController):
         return random.choices([node for node in functions])[0]
 
 
-    # BONUS2
     def get_move(self, game_state, pacman_index):
         """Checks all possible moves against the state evaluator and 
         determines which move is optimal, returning that move for the pacman at pacman_index
@@ -125,7 +124,6 @@ class PacmanController(base_controller_class.BaseController):
             return False
 
 
-        # BONUS2
         best_eval_result = -1 * ARBITRARY_LARGE_NUMBER
         best_eval_direction = d.Direction.NONE
 
@@ -143,7 +141,6 @@ class PacmanController(base_controller_class.BaseController):
         return best_eval_direction
          
 
-    # BONUS2
     def evaluate_state(self, game_state, pacman_coord):
         """Given a current (or potential) game state and a new pacman coordinate, a rating
         is provided from the state evaluator.
@@ -171,7 +168,6 @@ class PacmanController(base_controller_class.BaseController):
             elif object == 'fruit' and game_state.fruit_coord:
                 coords_to_search = game_state.fruit_coord
 
-            # BONUS2
             elif object == 'pacman' and len(game_state.pacman_coords) > 1:
                 coords_to_search = [coord_class.Coordinate(c.x, c.y) for c in game_state.pacman_coords if not c.x == pacman_coord.x and not c.y == pacman_coord.y]
 
@@ -204,7 +200,6 @@ class PacmanController(base_controller_class.BaseController):
                 nonlocal fruit_distance
                 nonlocal num_adj_walls
 
-                # BONUS2
                 nonlocal pacman_distance
 
                 ret = 0
@@ -221,7 +216,6 @@ class PacmanController(base_controller_class.BaseController):
                 elif node.value == terminals.NUM_ADJ_WALLS:
                     ret = num_adj_walls
                 
-                # BONUS2
                 elif node.value == terminals.NEAREST_PACMAN_DIST:
                     ret = pacman_distance
                 
@@ -265,8 +259,6 @@ class PacmanController(base_controller_class.BaseController):
         ghost_distance = get_nearest_distance(pacman_coord, 'ghost')
         pill_distance = get_nearest_distance(pacman_coord, 'pill')
         fruit_distance = get_nearest_distance(pacman_coord, 'fruit')
-        
-        # BONUS2
         pacman_distance = get_nearest_distance(pacman_coord, 'pacman')
         
         num_adj_walls = game_state.num_adj_walls

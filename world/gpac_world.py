@@ -43,7 +43,6 @@ class GPacWorld:
         for pacman_coord in self.pacman_coords:
             self.prev_pacman_coords.append(coord_class.Coordinate(pacman_coord.x, pacman_coord.y))
 
-        # BONUS2 (include a taboo list of pacmen to help with indexing)
         self.dead_pacmen = set([])
 
         self.prev_ghost_coords = []
@@ -166,7 +165,6 @@ class GPacWorld:
 
         If a pacman is marked as dead, it will not be moved.
         """
-        # BONUS2
         if self.pacman_coords[pacman_index] in self.dead_pacmen:
             # This pacman is dead, don't move it
             return
@@ -230,7 +228,6 @@ class GPacWorld:
             3. all pills are gone
             4. time remaining is equal to zero
         """
-        # BONUS2
         for pacman_index, pacman_coord in enumerate(self.pacman_coords):
             if pacman_coord in self.ghost_coords:
                 self.dead_pacmen.add(self.pacman_coords[pacman_index])
