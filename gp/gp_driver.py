@@ -138,11 +138,11 @@ class GPDriver:
         """
         controller_populations = [self.pacman_cont_population, self.ghost_cont_population]
 
-        # Indices for determining which parsimony coefficient to use
-        PACMAN_INDEX = 0
-        GHOST_INDEX = 1
+        # IDs (indices) for determining which parsimony coefficient to use
+        PACMAN_ID = 0
+        GHOST_ID = 1
 
-        for index, population in enumerate(controller_populations):
+        for unit_id, population in enumerate(controller_populations):
             avg_num_nodes = 0
             avg_num_nodes = int(sum([individual.cont.get_num_nodes() for individual in population]) / len(population))
 
@@ -150,11 +150,11 @@ class GPDriver:
                 num_nodes = individual.cont.get_num_nodes()
 
                 if  num_nodes > avg_num_nodes:
-                    if index == PACMAN_INDEX:
+                    if unit_id == PACMAN_ID:
                         p = float(self.config.settings['pacman p parsimony coefficient'])
 
                     else:
-                        # Default to GHOST_INDEX
+                        # Default to GHOST_ID
                         p = float(self.config.settings['ghost p parsimony coefficient'])
 
                     individual.fitness /= p * (num_nodes - avg_num_nodes)
