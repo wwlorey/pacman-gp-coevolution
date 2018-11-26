@@ -59,6 +59,11 @@ class GPDriver:
         self.pacman_cont_children = []
         self.ghost_cont_children = []
 
+        self.FITNESS_PROPORTIONAL_SELECTION_CHOICES = (self.config.settings.getboolean('pacman use fitness proportional parent selection'), self.config.settings.getboolean('ghost use fitness proportional parent selection'))
+        self.X_OVERSELECTION_CHOICES = (float(self.config.settings['pacman x overselection']), float(self.config.settings['ghost x overselection']))
+        self.PACMAN_ID = 0
+        self.GHOST_ID = 1
+
         # TODO: remove
         self.population = []
         self.parents = []
@@ -138,10 +143,6 @@ class GPDriver:
         """
         controller_populations = [self.pacman_cont_population, self.ghost_cont_population]
 
-        # IDs (indices) for determining which parsimony coefficient to use
-        PACMAN_ID = 0
-        GHOST_ID = 1
-
         for unit_id, population in enumerate(controller_populations):
             avg_num_nodes = 0
             avg_num_nodes = int(sum([individual.cont.get_num_nodes() for individual in population]) / len(population))
@@ -150,11 +151,11 @@ class GPDriver:
                 num_nodes = individual.cont.get_num_nodes()
 
                 if  num_nodes > avg_num_nodes:
-                    if unit_id == PACMAN_ID:
+                    if unit_id == self.PACMAN_ID:
                         p = float(self.config.settings['pacman p parsimony coefficient'])
 
                     else:
-                        # Default to GHOST_ID
+                        # Default to self.GHOST_ID
                         p = float(self.config.settings['ghost p parsimony coefficient'])
 
                     individual.fitness /= p * (num_nodes - avg_num_nodes)
@@ -162,7 +163,9 @@ class GPDriver:
 
 
     def evaluate(self, population):
-        """Evaluates all population members given in population by running
+        """TODO: How will the three populations be passed around & matched up?
+        
+        Evaluates all population members given in population by running
         each world's game until completion.
         """
         for individual in population:
@@ -175,62 +178,69 @@ class GPDriver:
 
 
     def select_parents(self):
-        """TODO: expand for ghosts
-        
-        Chooses which parents from the population will breed.
+        """Chooses which parents from the population will breed.
 
-        Depending on the parent selection configuration, one of the three following 
-        methods is used to select parents for the pacmen and ghosts:
+        Depending on the parent selection configuration, one of the two following 
+        methods is used to select parents for the pacmen and ghosts (independently configurable):
             1. Fitness proportional selection
             2. Over-selection
 
-        The resulting parents are stored in self.parents.
+        The resulting parents are stored in self.pacman_cont_parents and self.ghost_cont_parents.
         """
-        self.parents = []
+        parent_populations = ([], []) # (new pacman controller parent population, new ghost controller parent population)
+        cont_populations = (self.pacman_cont_population, self.ghost_cont_population)
 
-        if self.config.settings.getboolean('use fitness proportional parent selection'):
-            # Select parents for breeding using the fitness proportional "roulette wheel" method (with replacement)
-            parent_fitnesses = [individual.fitness for individual in self.population]
+        # Perform parent selection for the pacman and ghost controllers
+        for unit_id in range(len(parent_populations)):
+            parents = []
 
-            if max(parent_fitnesses) == min(parent_fitnesses):
-                # All parent fitnesses are the same so select parents at random
-                for _ in range(self.parent_population_size):
-                    self.parents.append(self.population[random.randrange(0, len(self.population))])
+            if self.FITNESS_PROPORTIONAL_SELECTION_CHOICES[unit_id]:
+                # Select parents for breeding using the fitness proportional "roulette wheel" method (with replacement)
+                parent_fitnesses = [individual.fitness for individual in cont_populations[unit_id]]
+
+                if max(parent_fitnesses) == min(parent_fitnesses):
+                    # All parent fitnesses are the same so select parents at random
+                    for _ in range(self.parent_population_size):
+                        parents.append(cont_populations[unit_id][random.randrange(0, len(cont_populations[unit_id]))])
+
+                else:
+                    parent_populations[unit_id] = random.choices(cont_populations[unit_id], weights=parent_fitnesses, k=self.parent_population_size)
 
             else:
-                self.parents = random.choices(self.population, weights=parent_fitnesses, k=self.parent_population_size)
+                # Default to over-selection parent selection
+                elite_index_cuttoff = int(self.X_OVERSELECTION_CHOICES[unit_id]) * len(cont_populations[unit_id]))
 
-        else:
-            # Default to over-selection parent selection
-            elite_index_cuttoff = int(float(self.config.settings['x overselection']) * len(self.population))
+                # Note: the following hardcoded percentages are specified as part of the overselection algorithm
+                num_elite_parents = int(0.80 * self.parent_population_size)
+                num_sub_elite_parents = int(0.20 * self.parent_population_size)
 
-            # Note: the following hardcoded percentages are specified as part of the overselection algorithm
-            num_elite_parents = int(0.80 * self.parent_population_size)
-            num_sub_elite_parents = int(0.20 * self.parent_population_size)
+                self.sort_individuals(cont_populations[unit_id])
+                elite_group = cont_populations[unit_id][:elite_index_cuttoff]
+                sub_elite_group = cont_populations[unit_id][elite_index_cuttoff:]
 
-            self.sort_individuals(self.population)
-            elite_group = self.population[:elite_index_cuttoff]
-            sub_elite_group = self.population[elite_index_cuttoff:]
+                elite_choices = [individual.fitness for individual in elite_group]
 
-            elite_choices = [individual.fitness for individual in elite_group]
+                if max(elite_choices) == min(elite_choices):
+                    # All elite individual fitnesses are the same so select individuals at random
+                    for _ in range(num_elite_parents):
+                        parent_populations[unit_id].append(elite_group.pop())
+                
+                else:
+                    parent_populations[unit_id] = random.choices(elite_group, weights=elite_choices, k=num_elite_parents)
 
-            if max(elite_choices) == min(elite_choices):
-                # All elite individual fitnesses are the same so select individuals at random
-                for _ in range(num_elite_parents):
-                    self.parents.append(elite_group.pop())
-            
-            else:
-                self.parents = random.choices(elite_group, weights=elite_choices, k=num_elite_parents)
+                sub_elite_choices = [individual.fitness for individual in sub_elite_group]
 
-            sub_elite_choices = [individual.fitness for individual in sub_elite_group]
+                if max(sub_elite_choices) == min(sub_elite_choices):
+                    # All sub-elite individual fitnesses are the same so select individuals at random
+                    for _ in range(num_sub_elite_parents):
+                        parent_populations[unit_id].append(sub_elite_group.pop())
+                
+                else:
+                    parent_populations[unit_id] += random.choices(sub_elite_group, weights=sub_elite_choices, k=num_sub_elite_parents)
 
-            if max(sub_elite_choices) == min(sub_elite_choices):
-                # All sub-elite individual fitnesses are the same so select individuals at random
-                for _ in range(num_sub_elite_parents):
-                    self.parents.append(sub_elite_group.pop())
-            
-            else:
-                self.parents += random.choices(sub_elite_group, weights=sub_elite_choices, k=num_sub_elite_parents)
+        # Save parent selections to the parent population class members
+        self.pacman_cont_parents = parent_populations[self.PACMAN_ID]
+        self.ghost_cont_parents = parent_populations[self.GHOST_ID]
                  
 
     def recombine(self):
