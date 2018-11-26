@@ -52,7 +52,7 @@ class GPDriver:
 
         self.local_best_pacman_fitness = -1
         self.global_best_pacman_fitness = -1
-        self.global_best_ghost_fitness = ARBITRARY_LARGE_NUMBER
+        self.global_best_ghost_fitness = -1 * ARBITRARY_LARGE_NUMBER
 
         self.gpac_world_population = []
 
