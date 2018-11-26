@@ -61,6 +61,8 @@ class GPDriver:
 
         self.FITNESS_PROPORTIONAL_SELECTION_CHOICES = (self.config.settings.getboolean('pacman use fitness proportional parent selection'), self.config.settings.getboolean('ghost use fitness proportional parent selection'))
         self.X_OVERSELECTION_CHOICES = (float(self.config.settings['pacman x overselection']), float(self.config.settings['ghost x overselection']))
+        self.CHILD_POPULATION_SIZES = (self.pacman_child_population_size, self.ghost_child_population_size)
+        self.PARENT_POPULATION_SIZES = (self.pacman_parent_population_size, self.ghost_parent_population_size)
         self.PACMAN_ID = 0
         self.GHOST_ID = 1
 
@@ -103,7 +105,7 @@ class GPDriver:
             num_pacman_conts = self.num_pacmen
 
         for _ in range(self.pacman_population_size):
-            self.pacman_cont_population.append([cont_class.ControllerIndividual(pacman_cont_class.PacmanController(self.config)) for _ in range(num_pacman_conts)])
+            self.pacman_cont_population.append(cont_class.ControllerIndividual([pacman_cont_class.PacmanController(self.config) for _ in range(num_pacman_conts)]))
 
 
         if self.use_single_ghost_cont:
@@ -113,7 +115,7 @@ class GPDriver:
             num_ghost_conts = self.num_ghosts
 
         for _ in range(self.ghost_population_size):
-            self.ghost_cont_population.append([cont_class.ControllerIndividual(ghost_cont_class.GhostController(self.config)) for _ in range(num_ghost_conts)])
+            self.ghost_cont_population.append(cont_class.ControllerIndividual([ghost_cont_class.GhostController(self.config) for _ in range(num_ghost_conts)]))
 
 
     def end_run(self):
@@ -193,6 +195,7 @@ class GPDriver:
         # Perform parent selection for the pacman and ghost controllers
         for unit_id in range(len(parent_populations)):
             parents = []
+            parent_population_size = self.PARENT_POPULATION_SIZES[unit_id]
 
             if self.FITNESS_PROPORTIONAL_SELECTION_CHOICES[unit_id]:
                 # Select parents for breeding using the fitness proportional "roulette wheel" method (with replacement)
@@ -200,19 +203,19 @@ class GPDriver:
 
                 if max(parent_fitnesses) == min(parent_fitnesses):
                     # All parent fitnesses are the same so select parents at random
-                    for _ in range(self.parent_population_size):
+                    for _ in range(parent_population_size):
                         parents.append(cont_populations[unit_id][random.randrange(0, len(cont_populations[unit_id]))])
 
                 else:
-                    parent_populations[unit_id] = random.choices(cont_populations[unit_id], weights=parent_fitnesses, k=self.parent_population_size)
+                    parent_populations[unit_id] = random.choices(cont_populations[unit_id], weights=parent_fitnesses, k=parent_population_size)
 
             else:
                 # Default to over-selection parent selection
                 elite_index_cuttoff = int(self.X_OVERSELECTION_CHOICES[unit_id]) * len(cont_populations[unit_id]))
 
                 # Note: the following hardcoded percentages are specified as part of the overselection algorithm
-                num_elite_parents = int(0.80 * self.parent_population_size)
-                num_sub_elite_parents = int(0.20 * self.parent_population_size)
+                num_elite_parents = int(0.80 * parent_population_size)
+                num_sub_elite_parents = int(0.20 * parent_population_size)
 
                 self.sort_individuals(cont_populations[unit_id])
                 elite_group = cont_populations[unit_id][:elite_index_cuttoff]
@@ -244,65 +247,68 @@ class GPDriver:
                  
 
     def recombine(self):
-        """TODO: expand for ghosts
-
-        Breeds lambda (offspring pool size) children using sub-tree crossover 
-        from the existing parent population. The resulting children are stored in 
-        self.children.
+        """Breeds lambda (offspring pool size) children using sub-tree crossover 
+        from the existing pacman and ghost parent populations. The resulting children are stored in 
+        self.pacman_cont_children and self.ghost_cont_children.
         """
 
-        def breed(parent_a, parent_b):
+        def breed(parent_a, parent_b, unit_id):
             """Performs sub-tree crossover on parent_a and parent_b returning the child tree."""
 
             def crossover_recursive(receiver_index, donator_index):
-                if receiver_index < len(child_pacman_conts[cont_index].state_evaluator) and donator_index < len(parent_pacman_cont.state_evaluator):
+                if receiver_index < len(child_conts[cont_index].state_evaluator) and donator_index < len(parent_cont.state_evaluator):
                     return
                 
-                child_pacman_conts[cont_index].state_evaluator[receiver_index] = tree.TreeNode(receiver_index, parent_pacman_cont.state_evaluator[donator_index].value)
-                crossover_recursive(child_pacman_conts[cont_index].state_evaluator.get_left_child_index(receiver_index), parent_pacman_cont.state_evaluator.get_left_child_index(donator_index))
-                crossover_recursive(child_pacman_conts[cont_index].state_evaluator.get_right_child_index(receiver_index), parent_pacman_cont.state_evaluator.get_right_child_index(donator_index))
+                child_conts[cont_index].state_evaluator[receiver_index] = tree.TreeNode(receiver_index, parent_cont.state_evaluator[donator_index].value)
+                crossover_recursive(child_conts[cont_index].state_evaluator.get_left_child_index(receiver_index), parent_cont.state_evaluator.get_left_child_index(donator_index))
+                crossover_recursive(child_conts[cont_index].state_evaluator.get_right_child_index(receiver_index), parent_cont.state_evaluator.get_right_child_index(donator_index))
 
 
-            child_pacman_conts = [None] * self.num_pacmen
-            for cont_index in range(self.num_pacmen):
+            if unit_id == self.PACMAN_ID:
+                num_conts = self.num_pacmen
+
+            else:
+                # Default to self.GHOST_ID
+                num_conts = self.num_ghosts
+
+            child_conts = [None] * num_conts
+            for cont_index in range(num_conts):
                 # Choose a random node (crossover point) from each state evaluator node list
-                crossover_node_a = parent_a.pacman_conts[cont_index].state_evaluator[random.choices([n for n in parent_a.pacman_conts[cont_index].state_evaluator if n.value])[0].index]
-                crossover_node_b = parent_b.pacman_conts[cont_index].state_evaluator[random.choices([n for n in parent_b.pacman_conts[cont_index].state_evaluator if n.value])[0].index]
+                crossover_node_a = parent_a.conts[cont_index].state_evaluator[random.choices([n for n in parent_a.conts[cont_index].state_evaluator if n.value])[0].index]
+                crossover_node_b = parent_b.conts[cont_index].state_evaluator[random.choices([n for n in parent_b.conts[cont_index].state_evaluator if n.value])[0].index]
 
-                child_pacman_conts[cont_index] = copy.copy(parent_a.pacman_conts[cont_index])
-                parent_pacman_cont = parent_b.pacman_conts[cont_index]
+                child_conts[cont_index] = copy.copy(parent_a.conts[cont_index])
+                parent_cont = parent_b.conts[cont_index]
 
                 # Extend the child's state evaluator if necessary
-                if len(child_pacman_conts[cont_index].state_evaluator) < len(parent_a.pacman_conts[cont_index].state_evaluator):
-                    child_pacman_conts[cont_index].state_evaluator = child_pacman_cont.state_evaluator + [tree.TreeNode(index, None) for index in range(len(child_pacman_cont.state_evaluator), len(parent_a.pacman_cont.state_evaluator))]
+                if len(child_conts[cont_index].state_evaluator) < len(parent_a.conts[cont_index].state_evaluator):
+                    child_conts[cont_index].state_evaluator = child_conts[cont_index].state_evaluator + [tree.TreeNode(index, None) for index in range(len(child_conts[cont_index].state_evaluator), len(parent_a.conts[cont_index].state_evaluator))]
 
                 # Perform sub-tree crossover
                 crossover_recursive(crossover_node_a.index, crossover_node_b.index)
 
             # Finish generating the child
-            world = gpac_world_class.GPacWorld(self.config)
-            game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, [self.get_num_adj_walls(world, pacman_coord) for pacman_coord in world.pacman_coords])
-            
-            pacman_conts = child_pacman_conts
-            
-            ghost_conts = parent_a.ghost_conts
-            game_state.update_walls(world.wall_coords)
-
-            child = gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghost_conts)
+            child = cont_class.ControllerIndividual(child_conts)
             return child
 
 
-        self.children = []
+        child_populations = ([], []) # (new pacman controller child population, new ghost controller child population)
+        parent_populations = (self.pacman_cont_parents, self.ghost_cont_parents)
 
-        for _ in range(self.child_population_size):
-            # Select parents with replacement
-            # Note: this implementation allows for parent_a and parent_b to be the same genotype
-            parent_a = self.parents[random.randrange(0, len(self.parents))]
-            parent_b = self.parents[random.randrange(0, len(self.parents))]
+        for unit_id in range(len(child_populations)):
+            for _ in range(self.CHILD_POPULATION_SIZES[unit_id]):
+                # Select parents with replacement
+                # Note: this implementation allows for parent_a and parent_b to be the same genotype
+                parent_a = parent_populations[unit_id][random.randrange(0, len(self.parents))]
+                parent_b = parent_populations[unit_id][random.randrange(0, len(self.parents))]
 
-            # Breed a child
-            self.children.append(breed(parent_a, parent_b))
+                # Breed a child
+                child_populations[unit_id].children.append(breed(parent_a, parent_b, unit_id))
         
+        # Save child selections to the child population class members
+        self.pacman_cont_children = child_populations[self.PACMAN_ID]
+        self.ghost_cont_children = child_populations[self.GHOST_ID]
+
 
     def mutate(self):
         """TODO: expand for ghosts
