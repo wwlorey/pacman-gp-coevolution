@@ -141,7 +141,7 @@ class GPacWorld:
                     wall_carvers = []
 
                     for i in range(int(self.config.settings['num respawn wall carvers'])):
-                        spawn_coord = random.choices(list(walls_to_carve))[0]
+                        spawn_coord = random.choice(list(walls_to_carve))
                         wall_carvers.append(wall_carver_class.WallCarver(spawn_coord.x, spawn_coord.y, self.config))
 
                     completed_circuit = False

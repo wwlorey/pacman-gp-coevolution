@@ -8,12 +8,3 @@ class TerminalNodes(Enum):
     NUM_ADJ_WALLS       = 3
     FP_CONSTANT         = 4
     NEAREST_PACMAN_DIST = 5
-
-
-class FunctionNodes(Enum):
-    ADD               = 0
-    SUBTRACT          = 1
-    MULTIPLY          = 2
-    DIVIDE            = 3
-    RANDOM_FLOAT      = 4
-

@@ -23,7 +23,7 @@ if __name__ == '__main__':
     while gp_driver.run_count <= int(config.settings['num experiment runs']):
         gp_driver.begin_run()
 
-        gp_driver.evaluate('main')
+        gp_driver.evaluate('init')
 
         while gp_driver.decide_termination():
             if config.settings.getboolean('control bloat'):
@@ -35,7 +35,7 @@ if __name__ == '__main__':
 
             gp_driver.mutate()
 
-            gp_driver.evaluate(gp_driver.children)
+            gp_driver.evaluate()
 
             gp_driver.select_for_survival()
 

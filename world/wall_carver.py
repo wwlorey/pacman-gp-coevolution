@@ -36,7 +36,7 @@ class WallCarver:
 
     def get_direction(self):
         """Randomly generates a new travel direction."""
-        self.direction = random.choices(self.POSSIBLE_MOVES)[0]
+        self.direction = random.choice(self.POSSIBLE_MOVES)
 
 
     def move(self):

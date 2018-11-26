@@ -1,6 +1,7 @@
 import controllers.base_controller as base_controller_class
 import controllers.direction as d
-import controllers.nodes as nodes_classes
+import controllers.function_nodes as func_nodes_class
+import controllers.pacman_terminal_nodes as term_nodes_class
 import controllers.tree as tree_class
 import copy
 import random
@@ -8,8 +9,8 @@ import world.coordinate as coord_class
 
 
 # Assign new node class names
-terminals = nodes_classes.TerminalNodes
-functions = nodes_classes.FunctionNodes
+terminals = term_nodes_class.TerminalNodes
+functions = func_nodes_class.FunctionNodes
 
 
 # Constant declarations
@@ -76,7 +77,7 @@ class PacmanController(base_controller_class.BaseController):
 
     def get_rand_terminal_node(self):
         """Returns a random terminal node."""
-        terminal_node = random.choices([node for node in terminals])[0]
+        terminal_node = random.choice([node for node in terminals])
 
         if terminal_node == terminals.FP_CONSTANT:
             # Return a floating point constant
@@ -87,7 +88,7 @@ class PacmanController(base_controller_class.BaseController):
 
     def get_rand_function_node(self):
         """Returns a random function node."""
-        return random.choices([node for node in functions])[0]
+        return random.choice([node for node in functions])
 
 
     def get_move(self, game_state, pacman_index):

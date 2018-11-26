@@ -121,7 +121,7 @@ class GPDriver:
 
         for _ in range(self.ghost_population_size):
             self.ghost_cont_population.append(cont_class.ControllerIndividual([ghost_cont_class.GhostController(self.config) for _ in range(num_ghost_conts)]))
-
+        
 
     def end_run(self):
         """Increments the run count by one.
@@ -299,17 +299,25 @@ class GPDriver:
 
 
             if unit_id == self.PACMAN_ID:
-                num_conts = self.num_pacmen
+                if self.config.settings.getboolean('use single pacman controller'):
+                    num_conts = 1
+
+                else:
+                    num_conts = self.num_pacmen
 
             else:
                 # Default to self.GHOST_ID
-                num_conts = self.num_ghosts
+                if self.config.settings.getboolean('use single ghost controller'):
+                    num_conts = 1
+                
+                else:
+                    num_conts = self.num_ghosts
 
             child_conts = [None] * num_conts
             for cont_index in range(num_conts):
                 # Choose a random node (crossover point) from each state evaluator node list
-                crossover_node_a = parent_a.conts[cont_index].state_evaluator[random.choices([n for n in parent_a.conts[cont_index].state_evaluator if n.value])[0].index]
-                crossover_node_b = parent_b.conts[cont_index].state_evaluator[random.choices([n for n in parent_b.conts[cont_index].state_evaluator if n.value])[0].index]
+                crossover_node_a = parent_a.conts[cont_index].state_evaluator[random.choice([n for n in parent_a.conts[cont_index].state_evaluator if n.value]).index]
+                crossover_node_b = parent_b.conts[cont_index].state_evaluator[random.choice([n for n in parent_b.conts[cont_index].state_evaluator if n.value]).index]
 
                 child_conts[cont_index] = copy.copy(parent_a.conts[cont_index])
                 parent_cont = parent_b.conts[cont_index]
@@ -401,7 +409,7 @@ class GPDriver:
             if self.K_TOURNAMENT_SURVIVAL_SELECTION_CHOICES[unit_id]:
                 # Use k-tournament for survival selection without replacement
                 while len(new_populations[unit_id]) <= self.POPULATION_SIZES[unit_id]:
-                    new_populations[unit_id].append(self.perform_tournament_selection(selection_pool, int(self.config.settings['k survival selection']), w_replacement=False))
+                    new_populations[unit_id].append(self.perform_tournament_selection(selection_pool, self.K_FOR_SURVIVAL_SELECTION[unit_id], w_replacement=False))
 
                 # Maintain the population size
                 # This accounts for situations where the population size is not divisible by k
