@@ -42,16 +42,17 @@ class GPDriver:
 
         self.run_count = 1
         self.eval_count = 0
-        self.local_best_score = -1
-        self.avg_score = 0
-        self.prev_avg_score = 0
-        self.stale_score_count_termination = 0
+        self.local_best_pacman_fitness = -1
+        self.pacman_avg_fitness = 0
+        self.prev_pacman_avg_fitness = 0
+        self.stale_fitness_count_termination = 0
 
         self.log = log_class.Log(self.config, self.seed, overwrite=True)
         self.soln = soln_class.Solution(self.config)
 
-        self.local_best_score = -1
-        self.global_best_score = -1
+        self.local_best_pacman_fitness = -1
+        self.global_best_pacman_fitness = -1
+        self.global_best_ghost_fitness = ARBITRARY_LARGE_NUMBER
 
         self.gpac_world_population = []
 
@@ -84,10 +85,10 @@ class GPDriver:
         This should be called before each run.
         """
         self.eval_count = 0
-        self.local_best_score = -1
-        self.avg_score = 0
-        self.prev_avg_score = 0
-        self.stale_score_count_termination = 0
+        self.local_best_pacman_fitness = -1
+        self.pacman_avg_fitness = 0
+        self.prev_pacman_avg_fitness = 0
+        self.stale_fitness_count_termination = 0
         self.log.write_run_header(self.run_count)
 
         # Initialize the populations
@@ -191,7 +192,7 @@ class GPDriver:
 
             self.end_eval(test_individual[self.PACMAN_ID], test_individual[self.GHOST_ID], test_individual[self.WORLD_ID])
         
-        # self.check_update_log_world_files(test_pairings)
+        self.check_update_log_world_files()
 
 
     def select_parents(self):
@@ -494,7 +495,7 @@ class GPDriver:
             # The number of desired evaluations has been reached
             return False
         
-        if self.stale_score_count_termination >= int(self.config.settings['n convergence criterion']):
+        if self.stale_fitness_count_termination >= int(self.config.settings['n convergence criterion']):
             # The population has stagnated
             return False
 
@@ -513,40 +514,70 @@ class GPDriver:
         return True
 
 
-    def check_update_log_world_files(self, test_pairings):
+    def check_update_log_world_files(self):
         """Writes a new log file entry and writes a transcript of this run to the 
         world file iff it had the global best score.
         """
-        # TODO: incorporate test pairings into this function
-        fitness_list = [individual.fitness for individual in self.pacman_cont_population]
-        self.avg_score = sum(fitness_list) / len(fitness_list)
-        local_best_fitness_candidate = max(self.pacman_cont_population, key=lambda x : x.fitness)
+        best_pacman_fitness = -1 * ARBITRARY_LARGE_NUMBER
+        best_ghost_fitness = -1 * ARBITRARY_LARGE_NUMBER
+        best_pacman = None
+        best_ghost = None
+        best_pacman_world = None
+        best_ghost_world = None
+        pacman_fitness_sum = 0
+        pacman_count = 0
 
-        # Determine if a new local best score (fitness) has been found
-        if local_best_fitness_candidate.fitness > self.local_best_score:
-            self.local_best_score = local_best_fitness_candidate.fitness
+        for test_pairing in self.test_pairings:
+            pacman_fitness_sum += test_pairing[self.PACMAN_ID].fitness
+            pacman_count += 1
 
-            # Determine if a new global best score has been found
-            if self.local_best_score > self.global_best_score:
-                self.global_best_score = self.local_best_score
+            if test_pairing[self.PACMAN_ID].fitness > best_pacman_fitness:
+                best_pacman = test_pairing[self.PACMAN_ID]
+                best_pacman_fitness = test_pairing[self.PACMAN_ID].fitness
+                best_pacman_world = test_pairing[self.WORLD_ID]
+            
+            if test_pairing[self.GHOST_ID].fitness > best_ghost_fitness:
+                best_ghost = test_pairing[self.GHOST_ID]
+                best_ghost_fitness = test_pairing[self.GHOST_ID].fitness
+                best_ghost_world = test_pairing[self.WORLD_ID]
+
+        self.pacman_avg_fitness = pacman_fitness_sum / pacman_count
+
+        # Determine if a new local best pacman fitness has been found
+        if best_pacman_fitness > self.local_best_pacman_fitness:
+            self.local_best_pacman_fitness = best_pacman_fitness
+
+            # Determine if a new global best pacman fitness has been found
+            if self.local_best_pacman_fitness > self.global_best_pacman_fitness:
+                self.global_best_pacman_fitness = self.local_best_pacman_fitness
 
                 # Write to world file
-                local_best_fitness_candidate.world.world_file.write_to_file()
+                best_pacman_world.world.world_file.write_to_file()
 
                 # Write to solution file
-                self.soln.write_to_file(individual)
+                self.soln.write_to_file(best_pacman.conts, 'pacman')
+
+        # Determine if a new global best ghost fitness has been found
+        if best_ghost_fitness > self.global_best_ghost_fitness:
+            self.global_best_ghost_fitness = best_ghost_fitness
+
+            # Write to world file
+            best_ghost_world.world.world_file.write_to_file()
+
+            # Write to solution file
+            self.soln.write_to_file(best_ghost.conts, 'ghost')
 
 
         # Write log file row
-        self.log.write_run_data(self.eval_count, self.avg_score, self.local_best_score)
+        self.log.write_run_data(self.eval_count, self.pacman_avg_fitness, self.local_best_pacman_fitness)
         
         # Determine if the population fitness is stagnating
-        if math.isclose(self.avg_score, self.prev_avg_score, rel_tol=float(self.config.settings['termination convergence criterion magnitude'])):
-            self.stale_score_count_termination += 1
+        if math.isclose(self.pacman_avg_fitness, self.prev_pacman_avg_fitness, rel_tol=float(self.config.settings['termination convergence criterion magnitude'])):
+            self.stale_fitness_count_termination += 1
 
         else:
             self.stale_fitness_count_termination = 0
-            self.prev_avg_score = self.avg_score
+            self.prev_pacman_avg_fitness = self.pacman_avg_fitness
 
 
     def get_num_adj_walls(self, world, coord):

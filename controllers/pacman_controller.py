@@ -77,7 +77,12 @@ class PacmanController(base_controller_class.BaseController):
 
     def get_rand_terminal_node(self):
         """Returns a random terminal node."""
-        terminal_node = random.choice([node for node in terminals])
+        # Ensure single-pacman worlds don't have the nearest distance to other pacman terminal node
+        if self.config.settings.getboolean('use single pacman controller'):
+            terminal_node = random.choice([node for node in terminals if not node == terminals.NEAREST_PACMAN_DIST])
+        
+        else:
+            terminal_node = random.choice([node for node in terminals])
 
         if terminal_node == terminals.FP_CONSTANT:
             # Return a floating point constant
@@ -304,6 +309,9 @@ class PacmanController(base_controller_class.BaseController):
 
             if node.value == terminals.NUM_ADJ_WALLS:
                 return 'num adj walls'
+
+            if node.value == terminals.NEAREST_PACMAN_DIST:
+                return 'pacman distance'
             
             if node.value == functions.ADD:
                 return '+'

@@ -14,27 +14,27 @@ class Solution:
         self.config = config
 
     
-    def write_to_file(self, individual):
+    def write_to_file(self, conts, unit_type='pacman'):
         """Writes the given solutions (PacmanController and GhostController objects) 
         to the solution files specified in self.config.
         """
-        file_names = [self.config.settings['pacman soln file path'], self.config.settings['ghost soln file path']]
-        cont_list = [individual.pacman_conts, individual.ghost_conts]
+        if unit_type == 'pacman':
+            file_name = self.config.settings['pacman soln file path']
 
-        for i, file_name in enumerate(file_names):
-            file = open(file_name, 'w')
+        else:
+            # Default to ghost
+            file_name = self.config.settings['ghost soln file path']
 
+        with open(file_name, 'w') as file:
             file.write(LIST_HEADER_STR)
             
-            for cont in cont_list[i]:
+            for cont in conts:
                 file.write(str([n.value for n in cont.state_evaluator]))
                 file.write('\n')
 
             file.write('\n')
 
             file.write(EQUATION_HEADER_STR)
-            for cont in cont_list[i]:
+            for cont in conts:
                 file.write(cont.visualize(print_output=False))
                 file.write('\n')
-
-            file.close()
