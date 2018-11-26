@@ -451,7 +451,7 @@ class GPDriver:
         
         else:
             for pacman_index, pacman_cont in enumerate(pacman_individual.conts):
-                world_individual.world.move_pacman(pacman_individual.pacman_cont.get_move(world_individual.game_state, pacman_index), pacman_index)
+                world_individual.world.move_pacman(pacman_cont.get_move(world_individual.game_state, pacman_index), pacman_index)
 
         if self.use_single_ghost_cont:
             for ghost_index in range(self.num_ghosts):
