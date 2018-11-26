@@ -70,6 +70,7 @@ class GPacWorld:
 
     def reset(self):
         """Resets all world elements except for wall placements."""
+        # Regenerate unit coordinates
         self.pacman_coords = [coord_class.Coordinate(0, self.height - 1) for _ in range(self.num_pacmen)]
         self.ghost_coords = [coord_class.Coordinate(self.width - 1, 0) for _ in range(self.num_ghosts)]
 
@@ -96,6 +97,9 @@ class GPacWorld:
             for c in self.all_coords.difference(set(self.pacman_coords)).difference(self.wall_coords):
                 self.pill_coords.add(c)
                 break
+        
+        # Reset time remaining
+        self.time_remaining = self.time_multiplier * self.width * self.height
 
 
     def generate_world(self):

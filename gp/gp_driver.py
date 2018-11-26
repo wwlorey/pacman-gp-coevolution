@@ -95,7 +95,7 @@ class GPDriver:
         self.pacman_cont_population = []
         self.ghost_cont_population = []
 
-        for _ in range(max(self.pacman_population_size, self.ghost_population_size)):
+        for _ in range(max(self.pacman_population_size, self.ghost_population_size, self.pacman_child_population_size, self.ghost_child_population_size)):
             world = gpac_world_class.GPacWorld(self.config)
             game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, [self.get_num_adj_walls(world, pacman_coord) for pacman_coord in world.pacman_coords])
             game_state.update_walls(world.wall_coords)
@@ -171,17 +171,13 @@ class GPDriver:
 
 
     def evaluate(self, population_type='child'):
-        """TODO: How will the three populations be passed around & matched up?
-        
-        Evaluates all population members given in population by running
-        each world's game until completion.
-        """
+        """Evaluates all population members given by running each world's game until completion."""
         # Create world-controller pairings
         self.test_pairings = []
 
         if population_type == 'child':
             # Load the child populations
-            for i in range(min(self.pacman_population_size, self.ghost_population_size)):
+            for i in range(min(self.pacman_child_population_size, self.ghost_child_population_size)):
                 self.test_pairings.append((self.pacman_cont_children[i], self.ghost_cont_children[i], self.gpac_world_population[i]))
         
         else:
@@ -194,7 +190,7 @@ class GPDriver:
                 self.move_units(test_individual[self.PACMAN_ID], test_individual[self.GHOST_ID], test_individual[self.WORLD_ID])
 
             self.end_eval(test_individual[self.PACMAN_ID], test_individual[self.GHOST_ID], test_individual[self.WORLD_ID])
-
+        
         # self.check_update_log_world_files(test_pairings)
 
 
