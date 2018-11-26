@@ -179,6 +179,19 @@ class PacmanController(base_controller_class.BaseController):
                 min_distance = min(min_distance, get_distance(pacman_coord, coord))
             
             return min_distance
+        
+
+        def get_num_adj_walls(pacman_coord):
+            """Returns the number of walls adjacent to pacman_coord."""
+            index = game_state.pacman_coords.find(pacman_coord)
+            if index >= 0:
+                num_adj_walls = game_state.num_adj_walls[index]
+            
+            else:
+                num_adj_walls = -1
+
+            print(num_adj_walls)
+            return num_adj_walls
 
         
         def evaluate_state_recursive(node):
@@ -199,7 +212,6 @@ class PacmanController(base_controller_class.BaseController):
                 nonlocal pill_distance
                 nonlocal fruit_distance
                 nonlocal num_adj_walls
-
                 nonlocal pacman_distance
 
                 ret = 0
@@ -260,8 +272,7 @@ class PacmanController(base_controller_class.BaseController):
         pill_distance = get_nearest_distance(pacman_coord, 'pill')
         fruit_distance = get_nearest_distance(pacman_coord, 'fruit')
         pacman_distance = get_nearest_distance(pacman_coord, 'pacman')
-        
-        num_adj_walls = game_state.num_adj_walls
+        num_adj_walls = get_num_adj_walls(pacman_coord)
 
         return evaluate_state_recursive(self.state_evaluator.get_root())
         

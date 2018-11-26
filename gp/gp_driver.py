@@ -3,6 +3,7 @@ import controllers.ghost_controller as ghost_cont_class
 import controllers.pacman_controller as pacman_cont_class
 import controllers.tree as tree
 import copy
+import gp.controller_individual as cont_class
 import gp.gpac_world_individual as gpac_world_individual_class
 import gp.log as log_class
 import gp.soln as soln_class
@@ -22,9 +23,13 @@ class GPDriver:
 
         self.seed = seed_class.Seed(self.config)
 
-        self.population_size = int(self.config.settings['mu'])
-        self.child_population_size = int(self.config.settings['lambda'])
-        self.parent_population_size = int(self.config.settings['num parents'])
+        self.pacman_population_size = int(self.config.settings['pacman mu'])
+        self.pacman_child_population_size = int(self.config.settings['pacman lambda'])
+        self.pacman_parent_population_size = int(self.config.settings['pacman num parents'])
+
+        self.ghost_population_size = int(self.config.settings['ghost mu'])
+        self.ghost_child_population_size = int(self.config.settings['ghost lambda'])
+        self.ghost_parent_population_size = int(self.config.settings['ghost num parents'])
 
         self.num_pacmen = int(self.config.settings['num pacmen'])
         self.num_ghosts = int(self.config.settings['num ghosts'])
@@ -45,6 +50,16 @@ class GPDriver:
         self.local_best_score = -1
         self.global_best_score = -1
 
+        self.gpac_world_population = []
+
+        self.pacman_cont_population = []
+        self.ghost_cont_population = []
+        self.pacman_cont_parents = []
+        self.ghost_cont_parents = []
+        self.pacman_cont_children = []
+        self.ghost_cont_children = []
+
+        # TODO: remove
         self.population = []
         self.parents = []
         self.children = []
@@ -63,27 +78,37 @@ class GPDriver:
         self.stale_score_count_termination = 0
         self.log.write_run_header(self.run_count)
 
-        # Initialize the population
-        self.population = []
+        # Initialize the populations
+        self.gpac_world_population = []
+        self.pacman_cont_population = []
+        self.ghost_cont_population = []
+
         for _ in range(self.population_size):
             world = gpac_world_class.GPacWorld(self.config)
-            game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, self.get_num_adj_walls(world, world.pacman_coords[0]))
-            
-            if self.use_single_pacman_cont:
-                pacman_conts = [pacman_cont_class.PacmanController(self.config)]
-
-            else:
-                pacman_conts = [pacman_cont_class.PacmanController(self.config) for _ in range(self.num_pacmen)]
-
-            if self.use_single_ghost_cont:
-                ghost_conts = [ghost_cont_class.GhostController(self.config)]
-
-            else:
-                ghost_conts = [ghost_cont_class.GhostController(self.config) for _ in range(self.num_pacmen)]
-
+            game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, [self.get_num_adj_walls(world, pacman_coord) for pacman_coord in world.pacman_coords])
             game_state.update_walls(world.wall_coords)
 
-            self.population.append(gpac_world_individual_class.GPacWorldIndividual(world, game_state, pacman_conts, ghost_conts))
+            self.gpac_world_population.append(gpac_world_individual_class.GPacWorldIndividual(world, game_state))
+
+
+        if self.use_single_pacman_cont:
+            num_pacman_conts = 1
+
+        else:
+            num_pacman_conts = self.num_pacmen
+
+        for _ in range(self.pacman_population_size):
+            self.pacman_cont_population.append([cont_class.ControllerIndividual(pacman_cont_class.PacmanController(self.config)) for _ in range(num_pacman_conts)])
+
+
+        if self.use_single_ghost_cont:
+            num_ghost_conts = 1
+        
+        else:
+            num_ghost_conts = self.num_ghosts
+
+        for _ in range(self.ghost_population_size):
+            self.ghost_cont_population.append([cont_class.ControllerIndividual(ghost_cont_class.GhostController(self.config)) for _ in range(num_ghost_conts)])
 
 
     def end_run(self):
@@ -95,39 +120,45 @@ class GPDriver:
 
 
     def end_eval(self, individual):
-        """Conditionally updates the log and world files and increments 
-        the evaluation count.
+        """Conditionally updates the log and world files, increments 
+        the evaluation count, and resets the positions of each unit in the individual.
 
         This should be called after each evaluation.
         """
         individual.fitness = individual.world.score
         self.eval_count += 1
 
+        individual.world.reset()
+        individual.game_state.update(individual.world.pacman_coords, individual.world.ghost_coords, individual.world.pill_coords, [self.get_num_adj_walls(world, pacman_coord) for pacman_coord in world.pacman_coords])
+
 
     def control_bloat(self):
         """Adjusts the fitness of each individual in the population by applying 
         parsimony pressure.
         """
-        for individual in self.population:
+        controller_populations = [self.pacman_cont_population, self.ghost_cont_population]
+
+        # Indices for determining which parsimony coefficient to use
+        PACMAN_INDEX = 0
+        GHOST_INDEX = 1
+
+        for index, population in enumerate(controller_populations):
             avg_num_nodes = 0
+            avg_num_nodes = int(sum([individual.cont.get_num_nodes() for individual in population]) / len(population))
 
-            for pacman_cont in individual.pacman_conts: 
-                avg_num_nodes += int(sum([pacman_cont.get_num_nodes() for individual in self.population]) / self.population_size)
+            for individual in population:
+                num_nodes = individual.cont.get_num_nodes()
 
-            for ghost_cont in individual.ghost_conts: 
-                avg_num_nodes += int(sum([ghost_cont.get_num_nodes() for individual in self.population]) / self.population_size)
+                if  num_nodes > avg_num_nodes:
+                    if index == PACMAN_INDEX:
+                        p = float(self.config.settings['pacman p parsimony coefficient'])
 
-            num_nodes = 0
+                    else:
+                        # Default to GHOST_INDEX
+                        p = float(self.config.settings['ghost p parsimony coefficient'])
 
-            for pacman_cont in individual.pacman_conts:
-                num_nodes += pacman_cont.get_num_nodes()
-
-            for ghost_cont in individual.ghost_conts:
-                num_nodes += ghost_cont.get_num_nodes()
-
-            if  num_nodes > avg_num_nodes:
-                individual.fitness /= int(float(self.config.settings['p parsimony coefficient']) * (num_nodes - avg_num_nodes))
-                individual.fitness = int(individual.fitness)
+                    individual.fitness /= p * (num_nodes - avg_num_nodes)
+                    individual.fitness = int(individual.fitness)
 
 
     def evaluate(self, population):
@@ -149,7 +180,7 @@ class GPDriver:
         Chooses which parents from the population will breed.
 
         Depending on the parent selection configuration, one of the three following 
-        methods is used to select parents:
+        methods is used to select parents for the pacmen and ghosts:
             1. Fitness proportional selection
             2. Over-selection
 
@@ -240,7 +271,7 @@ class GPDriver:
 
             # Finish generating the child
             world = gpac_world_class.GPacWorld(self.config)
-            game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, self.get_num_adj_walls(world, world.pacman_coords[0]))
+            game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, [self.get_num_adj_walls(world, pacman_coord) for pacman_coord in world.pacman_coords])
             
             pacman_conts = child_pacman_conts
             
@@ -332,7 +363,7 @@ class GPDriver:
         else:
             fruit_coord = None
 
-        individual.game_state.update(individual.world.pacman_coords, individual.world.ghost_coords, individual.world.pill_coords, self.get_num_adj_walls(individual.world, individual.world.pacman_coords[0]), fruit_coord)
+        individual.game_state.update(individual.world.pacman_coords, individual.world.ghost_coords, individual.world.pill_coords, [self.get_num_adj_walls(individual.world, pacman_coord) for pacman_coord in individual.world.pacman_coords], fruit_coord)
 
 
     def move_units(self, individual):

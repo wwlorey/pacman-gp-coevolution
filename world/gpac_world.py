@@ -28,7 +28,7 @@ class GPacWorld:
         self.time_multiplier = int(self.config.settings['time multiplier'])
 
         # Create initial world attributes
-        self.pacman_coords= [coord_class.Coordinate(0, self.height - 1) for _ in range(self.num_pacmen)]
+        self.pacman_coords = [coord_class.Coordinate(0, self.height - 1) for _ in range(self.num_pacmen)]
         self.ghost_coords = [coord_class.Coordinate(self.width - 1, 0) for _ in range(self.num_ghosts)]
         self.wall_coords = set([])
         self.pill_coords = set([])
@@ -66,6 +66,36 @@ class GPacWorld:
         self.world_file = world_file_class.WorldFile(self.config)
         self.world_file.save_first_snapshot(self.width, self.height, self.pacman_coords,
             self.wall_coords, self.ghost_coords, self.pill_coords, self.time_remaining)
+
+
+    def reset(self):
+        """Resets all world elements except for wall placements."""
+        self.pacman_coords = [coord_class.Coordinate(0, self.height - 1) for _ in range(self.num_pacmen)]
+        self.ghost_coords = [coord_class.Coordinate(self.width - 1, 0) for _ in range(self.num_ghosts)]
+
+        self.prev_pacman_coords = []
+        for pacman_coord in self.pacman_coords:
+            self.prev_pacman_coords.append(coord_class.Coordinate(pacman_coord.x, pacman_coord.y))
+
+        self.dead_pacmen = set([])
+
+        self.prev_ghost_coords = []
+        for ghost_coord in self.ghost_coords:
+            self.prev_ghost_coords.append(coord_class.Coordinate(ghost_coord.x, ghost_coord.y))
+
+        self.fruit_coord = set([])
+        self.pill_coords = set([])
+
+        # Add pills to the world
+        for c in self.all_coords.difference(set(self.pacman_coords)).difference(self.wall_coords):
+            if random.random() < self.pill_density:
+                self.pill_coords.add(c)
+
+        # Ensure at least one pill was placed
+        if not len(self.pill_coords):
+            for c in self.all_coords.difference(set(self.pacman_coords)).difference(self.wall_coords):
+                self.pill_coords.add(c)
+                break
 
 
     def generate_world(self):
