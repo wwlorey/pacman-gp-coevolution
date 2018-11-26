@@ -16,7 +16,7 @@ class GhostController(base_controller_class.BaseController):
             d.Direction.RIGHT]
 
 
-    def get_move(self, ghost_index, game_state):
+    def get_move(self, game_state, ghost_index):
         """Produces a move based on game_state.
 
         Note: for assignment 2b, the move is randomized.

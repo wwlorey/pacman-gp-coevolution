@@ -46,7 +46,7 @@ class PacmanController(base_controller_class.BaseController):
                 self.state_evaluator.add_node_right(parent_node, self.get_rand_terminal_node())
                 return
             
-            if allow_premature_end and target_height_met and current_depth < target_height and random.random() < float(self.config.settings['premature end probability']):
+            if allow_premature_end and target_height_met and current_depth < target_height and random.random() < float(self.config.settings['pacman premature end probability']):
                 # Prematurely end this branch
                 self.state_evaluator.add_node_left(parent_node, self.get_rand_terminal_node())
                 self.state_evaluator.add_node_right(parent_node, self.get_rand_terminal_node())
@@ -60,7 +60,7 @@ class PacmanController(base_controller_class.BaseController):
             init_state_evaluator_recursive(self.state_evaluator.get_right_child(parent_node), current_depth + 1)
 
 
-        target_height = random.randint(2, int(self.config.settings['max tree generation height']))
+        target_height = random.randint(2, int(self.config.settings['pacman max tree generation height']))
         self.state_evaluator = tree_class.Tree(self.config, self.get_rand_function_node())
 
         if random.random() < float(self.config.settings['ramped half-and-half probability']):
@@ -183,14 +183,20 @@ class PacmanController(base_controller_class.BaseController):
 
         def get_num_adj_walls(pacman_coord):
             """Returns the number of walls adjacent to pacman_coord."""
-            index = game_state.pacman_coords.find(pacman_coord)
+            index = -1
+
+            for i in range(len(game_state.pacman_coords)):
+                if game_state.pacman_coords[i] == pacman_coord:
+                    index = i
+                    break
+                    
             if index >= 0:
                 num_adj_walls = game_state.num_adj_walls[index]
             
             else:
                 num_adj_walls = -1
 
-            print(num_adj_walls)
+            # print(num_adj_walls)
             return num_adj_walls
 
         
@@ -362,7 +368,7 @@ class PacmanController(base_controller_class.BaseController):
             grow_recursive(self.state_evaluator.get_right_child(node), relative_depth + 1)
 
         
-        target_height = random.randint(int(self.config.settings['min tree mutation height']), int(self.config.settings['max tree mutation height']))
+        target_height = random.randint(int(self.config.settings['pacman min tree mutation height']), int(self.config.settings['pacman max tree mutation height']))
 
         self.state_evaluator[starting_node.index].value = self.get_rand_function_node()
         grow_recursive(starting_node)

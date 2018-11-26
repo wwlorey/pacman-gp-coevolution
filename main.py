@@ -23,7 +23,7 @@ if __name__ == '__main__':
     while gp_driver.run_count <= int(config.settings['num experiment runs']):
         gp_driver.begin_run()
 
-        gp_driver.evaluate(gp_driver.population)
+        gp_driver.evaluate('main')
 
         while gp_driver.decide_termination():
             if config.settings.getboolean('control bloat'):

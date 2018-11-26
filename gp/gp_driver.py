@@ -13,6 +13,9 @@ import util.seed as seed_class
 import world.gpac_world as gpac_world_class
 
 
+ARBITRARY_LARGE_NUMBER = 99999
+
+
 class GPDriver:
     def __init__(self, config):
         """Initializes the GPDriver class.
@@ -34,8 +37,8 @@ class GPDriver:
         self.num_pacmen = int(self.config.settings['num pacmen'])
         self.num_ghosts = int(self.config.settings['num ghosts'])
 
-        self.use_single_pacman_cont = self.config.settings.get_bool('use single pacman controller')
-        self.use_single_ghost_cont = self.config.settings.get_bool('use single ghost controller')
+        self.use_single_pacman_cont = self.config.settings.getboolean('use single pacman controller')
+        self.use_single_ghost_cont = self.config.settings.getboolean('use single ghost controller')
 
         self.run_count = 1
         self.eval_count = 0
@@ -58,6 +61,7 @@ class GPDriver:
         self.ghost_cont_parents = []
         self.pacman_cont_children = []
         self.ghost_cont_children = []
+        self.test_pairings = []
 
         self.FITNESS_PROPORTIONAL_SELECTION_CHOICES = (self.config.settings.getboolean('pacman use fitness proportional parent selection'), self.config.settings.getboolean('ghost use fitness proportional parent selection'))
         self.X_OVERSELECTION_CHOICES = (float(self.config.settings['pacman x overselection']), float(self.config.settings['ghost x overselection']))
@@ -70,11 +74,7 @@ class GPDriver:
         self.PARENT_POPULATION_SIZES = (self.pacman_parent_population_size, self.ghost_parent_population_size)
         self.PACMAN_ID = 0
         self.GHOST_ID = 1
-
-        # TODO: remove
-        self.population = []
-        self.parents = []
-        self.children = []
+        self.WORLD_ID = 2
 
 
     def begin_run(self):
@@ -95,7 +95,7 @@ class GPDriver:
         self.pacman_cont_population = []
         self.ghost_cont_population = []
 
-        for _ in range(self.population_size):
+        for _ in range(max(self.pacman_population_size, self.ghost_population_size)):
             world = gpac_world_class.GPacWorld(self.config)
             game_state = game_state_class.GameState(world.pacman_coords, world.ghost_coords, world.pill_coords, [self.get_num_adj_walls(world, pacman_coord) for pacman_coord in world.pacman_coords])
             game_state.update_walls(world.wall_coords)
@@ -131,17 +131,18 @@ class GPDriver:
         self.run_count += 1
 
 
-    def end_eval(self, individual):
+    def end_eval(self, pacman_individual, ghost_individual, world_individual):
         """Conditionally updates the log and world files, increments 
         the evaluation count, and resets the positions of each unit in the individual.
 
         This should be called after each evaluation.
         """
-        individual.fitness = individual.world.score
+        pacman_individual.fitness = world_individual.world.score
+        ghost_individual.fitness = -1 * world_individual.world.score
         self.eval_count += 1
 
-        individual.world.reset()
-        individual.game_state.update(individual.world.pacman_coords, individual.world.ghost_coords, individual.world.pill_coords, [self.get_num_adj_walls(world, pacman_coord) for pacman_coord in world.pacman_coords])
+        world_individual.world.reset()
+        world_individual.game_state.update(world_individual.world.pacman_coords, world_individual.world.ghost_coords, world_individual.world.pill_coords, [self.get_num_adj_walls(world_individual.world, pacman_coord) for pacman_coord in world_individual.world.pacman_coords])
 
 
     def control_bloat(self):
@@ -169,19 +170,32 @@ class GPDriver:
                     individual.fitness = int(individual.fitness)
 
 
-    def evaluate(self, population):
+    def evaluate(self, population_type='child'):
         """TODO: How will the three populations be passed around & matched up?
         
         Evaluates all population members given in population by running
         each world's game until completion.
         """
-        for individual in population:
-            while self.check_game_over(individual):
-                self.move_units(individual)
+        # Create world-controller pairings
+        self.test_pairings = []
 
-            self.end_eval(individual)
+        if population_type == 'child':
+            # Load the child populations
+            for i in range(min(self.pacman_population_size, self.ghost_population_size)):
+                self.test_pairings.append((self.pacman_cont_children[i], self.ghost_cont_children[i], self.gpac_world_population[i]))
+        
+        else:
+            # Default to main populations
+            for i in range(min(self.pacman_population_size, self.ghost_population_size)):
+                self.test_pairings.append((self.pacman_cont_population[i], self.ghost_cont_population[i], self.gpac_world_population[i]))
 
-        self.check_update_log_world_files()
+        for test_individual in self.test_pairings:
+            while self.check_game_over(test_individual[self.WORLD_ID]):
+                self.move_units(test_individual[self.PACMAN_ID], test_individual[self.GHOST_ID], test_individual[self.WORLD_ID])
+
+            self.end_eval(test_individual[self.PACMAN_ID], test_individual[self.GHOST_ID], test_individual[self.WORLD_ID])
+
+        # self.check_update_log_world_files(test_pairings)
 
 
     def select_parents(self):
@@ -194,7 +208,7 @@ class GPDriver:
 
         The resulting parents are stored in self.pacman_cont_parents and self.ghost_cont_parents.
         """
-        parent_populations = ([], []) # (new pacman controller parent population, new ghost controller parent population)
+        parent_populations = [[], []] # (new pacman controller parent population, new ghost controller parent population)
         cont_populations = (self.pacman_cont_population, self.ghost_cont_population)
 
         # Perform parent selection for the pacman and ghost controllers
@@ -204,7 +218,12 @@ class GPDriver:
 
             if self.FITNESS_PROPORTIONAL_SELECTION_CHOICES[unit_id]:
                 # Select parents for breeding using the fitness proportional "roulette wheel" method (with replacement)
-                parent_fitnesses = [individual.fitness for individual in cont_populations[unit_id]]
+                if unit_id == self.PACMAN_ID:
+                    parent_fitnesses = [individual.fitness for individual in cont_populations[unit_id]]
+                
+                else:
+                    # Default to self.GHOST_ID
+                    parent_fitnesses = [ARBITRARY_LARGE_NUMBER if not individual.fitness else -1 * (1 / individual.fitness) for individual in cont_populations[unit_id]]
 
                 if max(parent_fitnesses) == min(parent_fitnesses):
                     # All parent fitnesses are the same so select parents at random
@@ -216,7 +235,7 @@ class GPDriver:
 
             else:
                 # Default to over-selection parent selection
-                elite_index_cuttoff = int(self.X_OVERSELECTION_CHOICES[unit_id]) * len(cont_populations[unit_id]))
+                elite_index_cuttoff = int(self.X_OVERSELECTION_CHOICES[unit_id] * len(cont_populations[unit_id]))
 
                 # Note: the following hardcoded percentages are specified as part of the overselection algorithm
                 num_elite_parents = int(0.80 * parent_population_size)
@@ -226,7 +245,12 @@ class GPDriver:
                 elite_group = cont_populations[unit_id][:elite_index_cuttoff]
                 sub_elite_group = cont_populations[unit_id][elite_index_cuttoff:]
 
-                elite_choices = [individual.fitness for individual in elite_group]
+                if unit_id == self.PACMAN_ID:
+                    elite_choices = [individual.fitness for individual in elite_group]
+                
+                else:
+                    # Default to self.GHOST_ID
+                    elite_choices = [ARBITRARY_LARGE_NUMBER if not individual.fitness else -1 * (1 / individual.fitness) for individual in elite_group]
 
                 if max(elite_choices) == min(elite_choices):
                     # All elite individual fitnesses are the same so select individuals at random
@@ -236,7 +260,12 @@ class GPDriver:
                 else:
                     parent_populations[unit_id] = random.choices(elite_group, weights=elite_choices, k=num_elite_parents)
 
-                sub_elite_choices = [individual.fitness for individual in sub_elite_group]
+                if unit_id == self.PACMAN_ID:
+                    sub_elite_choices = [individual.fitness for individual in sub_elite_group]
+                
+                else:
+                    # Default to self.GHOST_ID
+                    sub_elite_choices = [ARBITRARY_LARGE_NUMBER if not individual.fitness else -1 * (1 / individual.fitness) for individual in sub_elite_group]
 
                 if max(sub_elite_choices) == min(sub_elite_choices):
                     # All sub-elite individual fitnesses are the same so select individuals at random
@@ -297,18 +326,18 @@ class GPDriver:
             return child
 
 
-        child_populations = ([], []) # (new pacman controller child population, new ghost controller child population)
+        child_populations = [[], []] # (new pacman controller child population, new ghost controller child population)
         parent_populations = (self.pacman_cont_parents, self.ghost_cont_parents)
 
         for unit_id in range(len(child_populations)):
             for _ in range(self.CHILD_POPULATION_SIZES[unit_id]):
                 # Select parents with replacement
                 # Note: this implementation allows for parent_a and parent_b to be the same genotype
-                parent_a = parent_populations[unit_id][random.randrange(0, len(self.parents))]
-                parent_b = parent_populations[unit_id][random.randrange(0, len(self.parents))]
+                parent_a = parent_populations[unit_id][random.randrange(0, len(parent_populations[unit_id]))]
+                parent_b = parent_populations[unit_id][random.randrange(0, len(parent_populations[unit_id]))]
 
                 # Breed a child
-                child_populations[unit_id].children.append(breed(parent_a, parent_b, unit_id))
+                child_populations[unit_id].append(breed(parent_a, parent_b, unit_id))
         
         # Save child selections to the child population class members
         self.pacman_cont_children = child_populations[self.PACMAN_ID]
@@ -354,7 +383,7 @@ class GPDriver:
 
         Survivors are stored in self.pacman_cont_population and self.ghost_cont_population.
         """
-        new_populations = ([], []) # (new pacman controller population, new ghost controller population)
+        new_populations = [[], []] # (new pacman controller population, new ghost controller population)
         child_populations = (self.pacman_cont_parents, self.ghost_cont_parents)
         existing_populations = (self.pacman_cont_population, self.ghost_cont_population)
 
@@ -388,18 +417,18 @@ class GPDriver:
         self.ghost_cont_population = new_populations[self.GHOST_ID]
         
 
-    def update_game_state(self, individual):
+    def update_game_state(self, world_individual):
         """Updates the state of the game *before* all characters have moved."""
-        if len(individual.world.fruit_coord):
-            fruit_coord = individual.world.fruit_coord
+        if len(world_individual.world.fruit_coord):
+            fruit_coord = world_individual.world.fruit_coord
 
         else:
             fruit_coord = None
 
-        individual.game_state.update(individual.world.pacman_coords, individual.world.ghost_coords, individual.world.pill_coords, [self.get_num_adj_walls(individual.world, pacman_coord) for pacman_coord in individual.world.pacman_coords], fruit_coord)
+        world_individual.game_state.update(world_individual.world.pacman_coords, world_individual.world.ghost_coords, world_individual.world.pill_coords, [self.get_num_adj_walls(world_individual.world, pacman_coord) for pacman_coord in world_individual.world.pacman_coords], fruit_coord)
 
 
-    def move_units(self, individual):
+    def move_units(self, pacman_individual, ghost_individual, world_individual):
         """Moves all units in individual.world based on the unit controller moves.
         
         Before units are moved, a fruit probabilistically spawns and the game state
@@ -407,47 +436,47 @@ class GPDriver:
 
         After units are moved, game variables are updated.
         """
-        individual.world.randomly_spawn_fruit()
+        world_individual.world.randomly_spawn_fruit()
 
-        self.update_game_state(individual)
+        self.update_game_state(world_individual)
 
         if self.use_single_pacman_cont:
             for pacman_index in range(self.num_pacmen):
-                individual.world.move_pacman(individual.pacman_conts[0].get_move(individual.game_state, pacman_index), pacman_index)
+                world_individual.world.move_pacman(pacman_individual.conts[0].get_move(world_individual.game_state, pacman_index), pacman_index)
         
         else:
-            for pacman_index, pacman_cont in enumerate(individual.pacman_conts):
-                individual.world.move_pacman(pacman_cont.get_move(individual.game_state, pacman_index), pacman_index)
+            for pacman_index, pacman_cont in enumerate(pacman_individual.conts):
+                world_individual.world.move_pacman(pacman_individual.pacman_cont.get_move(world_individual.game_state, pacman_index), pacman_index)
 
         if self.use_single_ghost_cont:
             for ghost_index in range(self.num_ghosts):
-                individual.world.move_ghost(individual.ghost_conts[0].get_move(individual.game_state, ghost_index), ghost_index)
+                world_individual.world.move_ghost(ghost_individual.conts[0].get_move(world_individual.game_state, ghost_index), ghost_index)
 
         else:
-            for ghost_index, ghost_cont in enumerate(individual.ghost_conts):
-                individual.world.move_ghost(ghost_cont.get_move(individual.game_state, ghost_index), ghost_index)
+            for ghost_index, ghost_cont in enumerate(ghost_individual.conts):
+                world_individual.world.move_ghost(ghost_cont.get_move(world_individual.game_state, ghost_index), ghost_index)
 
         # Update time remaining
-        individual.world.time_remaining -= 1
+        world_individual.world.time_remaining -= 1
 
-        for pacman_coord in individual.world.pacman_coords:
+        for pacman_coord in world_individual.world.pacman_coords:
             # Update pills
-            if pacman_coord in individual.world.pill_coords:
-                individual.world.pill_coords.remove(pacman_coord)
-                individual.world.num_pills_consumed += 1
+            if pacman_coord in world_individual.world.pill_coords:
+                world_individual.world.pill_coords.remove(pacman_coord)
+                world_individual.world.num_pills_consumed += 1
 
             # Update fruit
-            if pacman_coord in individual.world.fruit_coord:
-                individual.world.fruit_coord.remove(pacman_coord)
-                individual.world.num_fruit_consumed += 1
+            if pacman_coord in world_individual.world.fruit_coord:
+                world_individual.world.fruit_coord.remove(pacman_coord)
+                world_individual.world.num_fruit_consumed += 1
 
         # Update score
-        individual.world.update_score()
+        world_individual.world.update_score()
 
         # Update the world state
-        individual.world.world_file.save_snapshot(individual.world.pacman_coords,
-            individual.world.ghost_coords, individual.world.fruit_coord, 
-            individual.world.time_remaining, individual.world.score)
+        world_individual.world.world_file.save_snapshot(world_individual.world.pacman_coords,
+            world_individual.world.ghost_coords, world_individual.world.fruit_coord, 
+            world_individual.world.time_remaining, world_individual.world.score)
 
 
     def decide_termination(self):
@@ -480,36 +509,33 @@ class GPDriver:
         return True
 
 
-    def check_update_log_world_files(self):
+    def check_update_log_world_files(self, test_pairings):
         """Writes a new log file entry and writes a transcript of this run to the 
         world file iff it had the global best score.
         """
-        fitness_list = [individual.fitness for individual in self.population]
-        self.avg_score = sum(fitness_list) / self.population_size
-        local_best_fitness_candidate = max(fitness_list)
+        # TODO: incorporate test pairings into this function
+        fitness_list = [individual.fitness for individual in self.pacman_cont_population]
+        self.avg_score = sum(fitness_list) / len(fitness_list)
+        local_best_fitness_candidate = max(self.pacman_cont_population, key=lambda x : x.fitness)
 
         # Determine if a new local best score (fitness) has been found
-        if local_best_fitness_candidate > self.local_best_score:
-            self.local_best_score = local_best_fitness_candidate
+        if local_best_fitness_candidate.fitness > self.local_best_score:
+            self.local_best_score = local_best_fitness_candidate.fitness
 
-            for individual in self.population:
-                if individual.fitness == self.local_best_score:
-                    local_best_individual = individual
-                    break
+            # Determine if a new global best score has been found
+            if self.local_best_score > self.global_best_score:
+                self.global_best_score = self.local_best_score
+
+                # Write to world file
+                local_best_fitness_candidate.world.world_file.write_to_file()
+
+                # Write to solution file
+                self.soln.write_to_file(individual)
+
 
         # Write log file row
         self.log.write_run_data(self.eval_count, self.avg_score, self.local_best_score)
         
-        # Determine if a new global best score has been found
-        if self.local_best_score > self.global_best_score:
-            self.global_best_score = self.local_best_score
-
-            # Write to world file
-            individual.world.world_file.write_to_file()
-
-            # Write to solution file
-            self.soln.write_to_file(individual)
-
         # Determine if the population fitness is stagnating
         if math.isclose(self.avg_score, self.prev_avg_score, rel_tol=float(self.config.settings['termination convergence criterion magnitude'])):
             self.stale_score_count_termination += 1
