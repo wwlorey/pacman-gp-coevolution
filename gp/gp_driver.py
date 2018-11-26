@@ -61,6 +61,10 @@ class GPDriver:
 
         self.FITNESS_PROPORTIONAL_SELECTION_CHOICES = (self.config.settings.getboolean('pacman use fitness proportional parent selection'), self.config.settings.getboolean('ghost use fitness proportional parent selection'))
         self.X_OVERSELECTION_CHOICES = (float(self.config.settings['pacman x overselection']), float(self.config.settings['ghost x overselection']))
+        self.SURVIVAL_STRATEGY_CHOICES = (self.config.settings.getboolean('pacman comma survival strategy'), self.config.settings.getboolean('ghost comma survival strategy'))
+        self.K_TOURNAMENT_SURVIVAL_SELECTION_CHOICES = (self.config.settings.getboolean('pacman use k tournament survival selection'), self.config.settings.getboolean('ghost use k tournament survival selection'))
+        self.K_FOR_SURVIVAL_SELECTION = (int(self.config.settings['pacman k survival selection']), int(self.config.settings['ghost k survival selection']))
+        self.POPULATION_SIZES = (self.pacman_population_size, self.ghost_population_size)
         self.CHILD_POPULATION_SIZES = (self.pacman_child_population_size, self.ghost_child_population_size)
         self.PARENT_POPULATION_SIZES = (self.pacman_parent_population_size, self.ghost_parent_population_size)
         self.PACMAN_ID = 0
@@ -338,37 +342,45 @@ class GPDriver:
         
 
     def select_for_survival(self):
-        """TODO: expand for ghosts
-        
-        Survivors are selected based on the following configurable methods:
+        """Survivors are selected based on the following configurable methods (independently
+        configurable for pacmen and ghosts):
             1. k-tournament selection without replacement
             2. Truncation
 
-        Survivors are stored in self.population.
+        Survivors are stored in self.pacman_cont_population and self.ghost_cont_population.
         """
-        if self.config.settings.getboolean('comma survival strategy'):
-            # Use the comma survival strategy
-            selection_pool = self.children
-        
-        else:
-            # Default to plus survival strategy
-            selection_pool = self.population + self.children
+        new_populations = ([], []) # (new pacman controller population, new ghost controller population)
+        child_populations = (self.pacman_cont_parents, self.ghost_cont_parents)
+        existing_populations = (self.pacman_cont_population, self.ghost_cont_population)
 
-        self.population = []
+        for unit_id in range(len(new_populations)):
+            if self.SURVIVAL_STRATEGY_CHOICES[unit_id]:
+                # Use the comma survival strategy
+                selection_pool = child_populations[unit_id]
+            
+            else:
+                # Default to plus survival strategy
+                selection_pool = existing_populations[unit_id] + child_populations[unit_id]
 
-        if self.config.settings.getboolean('use k tournament survival selection'):
-            # Use k-tournament for survival selection without replacement
-            while len(self.population) <= self.population_size:
-                self.population.append(self.perform_tournament_selection(selection_pool, int(self.config.settings['k survival selection']), w_replacement=False))
+            new_populations[unit_id] = []
 
-            # Maintain the population size
-            # This accounts for situations where the population size is not divisible by k
-            self.population = self.population[:self.population_size]
-        
-        else:
-            # Default to truncation survival selection
-            self.sort_individuals(selection_pool)
-            self.population = selection_pool[:self.population_size]
+            if self.K_TOURNAMENT_SURVIVAL_SELECTION_CHOICES[unit_id]:
+                # Use k-tournament for survival selection without replacement
+                while len(new_populations[unit_id]) <= self.POPULATION_SIZES[unit_id]:
+                    new_populations[unit_id].append(self.perform_tournament_selection(selection_pool, int(self.config.settings['k survival selection']), w_replacement=False))
+
+                # Maintain the population size
+                # This accounts for situations where the population size is not divisible by k
+                new_populations[unit_id] = new_populations[unit_id][:self.POPULATION_SIZES[unit_id]]
+            
+            else:
+                # Default to truncation survival selection
+                self.sort_individuals(selection_pool)
+                new_populations[unit_id] = selection_pool[:self.POPULATION_SIZES[unit_id]]
+
+        # Save new population selections to the population class members
+        self.pacman_cont_population = new_populations[self.PACMAN_ID]
+        self.ghost_cont_population = new_populations[self.GHOST_ID]
         
 
     def update_game_state(self, individual):
