@@ -64,6 +64,7 @@ class GPDriver:
         self.SURVIVAL_STRATEGY_CHOICES = (self.config.settings.getboolean('pacman comma survival strategy'), self.config.settings.getboolean('ghost comma survival strategy'))
         self.K_TOURNAMENT_SURVIVAL_SELECTION_CHOICES = (self.config.settings.getboolean('pacman use k tournament survival selection'), self.config.settings.getboolean('ghost use k tournament survival selection'))
         self.K_FOR_SURVIVAL_SELECTION = (int(self.config.settings['pacman k survival selection']), int(self.config.settings['ghost k survival selection']))
+        self.MUTATION_RATES = (float(self.config.settings['pacman mutation rate']), float(self.config.settings['ghost mutation rate']))
         self.POPULATION_SIZES = (self.pacman_population_size, self.ghost_population_size)
         self.CHILD_POPULATION_SIZES = (self.pacman_child_population_size, self.ghost_child_population_size)
         self.PARENT_POPULATION_SIZES = (self.pacman_parent_population_size, self.ghost_parent_population_size)
@@ -315,9 +316,7 @@ class GPDriver:
 
 
     def mutate(self):
-        """TODO: expand for ghosts
-        
-        Probabilistically performs sub-tree mutation on each child in the child population."""
+        """Probabilistically performs sub-tree mutation on each child in the child population."""
 
         def nullify(state_evaluator, node):
             """Recursively sets this node and its branch to the None node."""
@@ -328,17 +327,23 @@ class GPDriver:
                 nullify(state_evaluator, state_evaluator.get_right_child(node))
 
 
-        for child in self.children:
-            for pacman_cont in child.pacman_conts:
-                if random.random() < float(self.config.settings['mutation rate']):
-                    # Choose mutation node
-                    mutation_node = pacman_cont.state_evaluator[random.choices([n for n in pacman_cont.state_evaluator if n.value])[0].index]
+        child_populations = (self.pacman_cont_children, self.ghost_cont_children)
+        for unit_id, child_population in enumerate(child_populations):
+            for child in child_population:
+                for cont in child.conts:
+                    if random.random() < self.MUTATION_RATES[unit_id]:
+                        # Choose mutation node
+                        mutation_node = cont.state_evaluator[random.choices([n for n in cont.state_evaluator if n.value])[0].index]
 
-                    # Remove traces of previous subtree
-                    nullify(pacman_cont.state_evaluator, mutation_node)
+                        # Remove traces of previous subtree
+                        nullify(cont.state_evaluator, mutation_node)
 
-                    # Grow a new subtree
-                    pacman_cont.grow(mutation_node)
+                        # Grow a new subtree
+                        cont.grow(mutation_node)
+
+        # Save child mutations to the child population class members
+        self.pacman_cont_children = child_populations[self.PACMAN_ID]
+        self.ghost_cont_children = child_populations[self.GHOST_ID]
         
 
     def select_for_survival(self):
