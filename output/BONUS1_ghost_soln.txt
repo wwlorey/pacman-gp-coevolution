@@ -1,0 +1,13 @@
+###################################
+# State Evaluator Tree (list format)
+###################################
+[<FunctionNodes.SUBTRACT: 1>, <FunctionNodes.SUBTRACT: 1>, <FunctionNodes.MULTIPLY: 2>, 321.44306901499533, 599.0363278392608, <TerminalNodes.NEAREST_GHOST_DIST: 1>, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+[<FunctionNodes.MULTIPLY: 2>, <FunctionNodes.ADD: 0>, <FunctionNodes.RANDOM_FLOAT: 4>, 538.0909318425178, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, 33.11643816643617, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+[<FunctionNodes.ADD: 0>, 302.4763655044171, <TerminalNodes.NEAREST_GHOST_DIST: 1>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+###################################
+# State Evaluator Equation
+###################################
+( ( 321.44306901499533 - 599.0363278392608 ) - ( ghost distance * pacman distance ) )
+( ( 538.0909318425178 + pacman distance ) * ( pacman distance rand 33.11643816643617 ) )
+( 302.4763655044171 + ghost distance )
