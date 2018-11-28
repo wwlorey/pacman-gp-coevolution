@@ -1,0 +1,9 @@
+###################################
+# State Evaluator Tree (list format)
+###################################
+[<FunctionNodes.MULTIPLY: 2>, <FunctionNodes.DIVIDE: 3>, <FunctionNodes.DIVIDE: 3>, 641.2311660204851, 861.6383412211841, 609.4370069462548, <TerminalNodes.NEAREST_GHOST_DIST: 1>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+###################################
+# State Evaluator Equation
+###################################
+( ( 641.2311660204851 / 861.6383412211841 ) * ( 609.4370069462548 / ghost distance ) )
