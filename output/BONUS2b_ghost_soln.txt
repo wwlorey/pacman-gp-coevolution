@@ -1,9 +1,0 @@
-###################################
-# State Evaluator Tree (list format)
-###################################
-[<FunctionNodes.SUBTRACT: 1>, <FunctionNodes.ADD: 0>, <FunctionNodes.SUBTRACT: 1>, <TerminalNodes.NEAREST_GHOST_DIST: 1>, 994.2037261233406, <TerminalNodes.NEAREST_GHOST_DIST: 1>, <TerminalNodes.NEAREST_GHOST_DIST: 1>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
-
-###################################
-# State Evaluator Equation
-###################################
-( ( ghost distance + 994.2037261233406 ) - ( ghost distance - ghost distance ) )

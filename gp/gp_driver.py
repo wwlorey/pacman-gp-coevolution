@@ -142,9 +142,6 @@ class GPDriver:
         ghost_individual.fitness = -1 * world_individual.world.score
         self.eval_count += 1
 
-        world_individual.world.reset()
-        world_individual.game_state.update(world_individual.world.pacman_coords, world_individual.world.ghost_coords, world_individual.world.pill_coords, [self.get_num_adj_walls(world_individual.world, pacman_coord) for pacman_coord in world_individual.world.pacman_coords])
-
 
     def control_bloat(self):
         """Adjusts the fitness of each individual in the population by applying 
@@ -187,6 +184,9 @@ class GPDriver:
                 self.test_pairings.append((self.pacman_cont_population[i], self.ghost_cont_population[i], self.gpac_world_population[i]))
 
         for test_individual in self.test_pairings:
+            test_individual[self.WORLD_ID].world.reset()
+            self.update_game_state(test_individual[self.WORLD_ID])
+
             while self.check_game_over(test_individual[self.WORLD_ID]):
                 self.move_units(test_individual[self.PACMAN_ID], test_individual[self.GHOST_ID], test_individual[self.WORLD_ID])
 
@@ -210,7 +210,6 @@ class GPDriver:
 
         # Perform parent selection for the pacman and ghost controllers
         for unit_id in range(len(parent_populations)):
-            parents = []
             parent_population_size = self.PARENT_POPULATION_SIZES[unit_id]
 
             if self.FITNESS_PROPORTIONAL_SELECTION_CHOICES[unit_id]:
@@ -220,12 +219,12 @@ class GPDriver:
                 
                 else:
                     # Default to self.GHOST_ID
-                    parent_fitnesses = [ARBITRARY_LARGE_NUMBER if not individual.fitness else -1 * (1 / individual.fitness) for individual in cont_populations[unit_id]]
+                    parent_fitnesses = [ARBITRARY_LARGE_NUMBER if not individual.fitness else -1 * (1 / float(individual.fitness)) for individual in cont_populations[unit_id]]
 
                 if max(parent_fitnesses) == min(parent_fitnesses):
                     # All parent fitnesses are the same so select parents at random
                     for _ in range(parent_population_size):
-                        parents.append(cont_populations[unit_id][random.randrange(0, len(cont_populations[unit_id]))])
+                        parent_populations[unit_id].append(cont_populations[unit_id][random.randrange(0, len(cont_populations[unit_id]))])
 
                 else:
                     parent_populations[unit_id] = random.choices(cont_populations[unit_id], weights=parent_fitnesses, k=parent_population_size)
@@ -247,12 +246,16 @@ class GPDriver:
                 
                 else:
                     # Default to self.GHOST_ID
-                    elite_choices = [ARBITRARY_LARGE_NUMBER if not individual.fitness else -1 * (1 / individual.fitness) for individual in elite_group]
+                    elite_choices = [ARBITRARY_LARGE_NUMBER if not individual.fitness else -1 * (1 / float(individual.fitness)) for individual in elite_group]
 
                 if max(elite_choices) == min(elite_choices):
                     # All elite individual fitnesses are the same so select individuals at random
                     for _ in range(num_elite_parents):
-                        parent_populations[unit_id].append(elite_group.pop())
+                        if len(elite_group):
+                            parent_populations[unit_id].append(elite_group.pop())
+                        
+                        else:
+                            break
                 
                 else:
                     parent_populations[unit_id] = random.choices(elite_group, weights=elite_choices, k=num_elite_parents)
@@ -267,7 +270,11 @@ class GPDriver:
                 if max(sub_elite_choices) == min(sub_elite_choices):
                     # All sub-elite individual fitnesses are the same so select individuals at random
                     for _ in range(num_sub_elite_parents):
-                        parent_populations[unit_id].append(sub_elite_group.pop())
+                        if len(sub_elite_group):
+                            parent_populations[unit_id].append(sub_elite_group.pop())
+                        
+                        else:
+                            break
                 
                 else:
                     parent_populations[unit_id] += random.choices(sub_elite_group, weights=sub_elite_choices, k=num_sub_elite_parents)

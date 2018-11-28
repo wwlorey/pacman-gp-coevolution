@@ -1,9 +1,0 @@
-###################################
-# State Evaluator Tree (list format)
-###################################
-[<FunctionNodes.MULTIPLY: 2>, <FunctionNodes.SUBTRACT: 1>, <FunctionNodes.RANDOM_FLOAT: 4>, <TerminalNodes.NUM_ADJ_WALLS: 3>, 309.0936760247046, <TerminalNodes.PACMAN_FRUIT_DIST: 2>, <TerminalNodes.NUM_ADJ_WALLS: 3>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
-
-###################################
-# State Evaluator Equation
-###################################
-( ( num adj walls - 309.0936760247046 ) * ( fruit distance rand num adj walls ) )

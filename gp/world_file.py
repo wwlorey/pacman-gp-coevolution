@@ -20,16 +20,18 @@ class WorldFile:
         for pacman in pacmen:
             self.save_triplet('m', pacman.x, pacman.y)
 
-        for c in walls:
-            self.save_triplet('w', c.x, c.y)
-
         for ghost_index in range(len(ghosts)):
             self.save_triplet(ghost_index + 1, ghosts[ghost_index].x, ghosts[ghost_index].y)
+
+        for c in walls:
+            self.save_triplet('w', c.x, c.y)
 
         for c in pills:
             self.save_triplet('p', c.x, c.y)
 
         self.save_triplet('t', remaining_time, 0)
+
+        self.end_init_line = self.file_str.count('\n') + 1
 
         
     def save_snapshot(self, pacmen, ghosts, fruit, remaining_time, score):
@@ -65,4 +67,19 @@ class WorldFile:
         file = open(self.config.settings['world file path'], 'w')
         file.write(self.file_str)
         file.close()
+    
 
+    def flush(self):
+        """Removes all movement from the world file string."""
+        new_file_str = ''
+        line_count = 1
+
+        for line in self.file_str.split('\n'):
+            line_count += 1
+
+            if line_count > self.end_init_line:
+                break 
+
+            new_file_str += line + '\n'
+        
+        self.file_str = new_file_str

@@ -38,6 +38,7 @@ class GPacWorld:
         self.num_pills_consumed = 0
         self.num_fruit_consumed = 0
         self.score = 0
+        self.orig_pill_coords = set([])
 
         self.prev_pacman_coords = []
         for pacman_coord in self.pacman_coords:
@@ -88,18 +89,13 @@ class GPacWorld:
         self.pill_coords = set([])
 
         # Add pills to the world
-        for c in self.all_coords.difference(set(self.pacman_coords)).difference(self.wall_coords):
-            if random.random() < self.pill_density:
-                self.pill_coords.add(c)
-
-        # Ensure at least one pill was placed
-        if not len(self.pill_coords):
-            for c in self.all_coords.difference(set(self.pacman_coords)).difference(self.wall_coords):
-                self.pill_coords.add(c)
-                break
+        for c in self.orig_pill_coords:
+            self.pill_coords.add(c)
         
-        # Reset time remaining
         self.time_remaining = self.time_multiplier * self.width * self.height
+        self.world_file.flush()
+        self.num_pills_consumed = 0
+        self.score = 0
 
 
     def generate_world(self):
@@ -185,12 +181,16 @@ class GPacWorld:
         for c in self.all_coords.difference(set(self.pacman_coords)).difference(self.wall_coords):
             if random.random() < self.pill_density:
                 self.pill_coords.add(c)
-
+        
         # Ensure at least one pill was placed
         if not len(self.pill_coords):
             for c in self.all_coords.difference(set(self.pacman_coords)).difference(self.wall_coords):
                 self.pill_coords.add(c)
                 break
+
+        self.orig_pill_coords = set([])
+        for c in self.pill_coords:
+            self.orig_pill_coords.add(c)
 
     
     def move_pacman(self, direction, pacman_index):
