@@ -1,0 +1,9 @@
+###################################
+# State Evaluator Tree (list format)
+###################################
+[<FunctionNodes.SUBTRACT: 1>, <FunctionNodes.DIVIDE: 3>, <FunctionNodes.MULTIPLY: 2>, <FunctionNodes.ADD: 0>, <FunctionNodes.MULTIPLY: 2>, <TerminalNodes.PACMAN_PILL_DIST: 1>, <TerminalNodes.PACMAN_FRUIT_DIST: 2>, <TerminalNodes.PACMAN_PILL_DIST: 1>, 550.7257467453858, <TerminalNodes.NUM_ADJ_WALLS: 3>, <TerminalNodes.NUM_ADJ_WALLS: 3>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+###################################
+# State Evaluator Equation
+###################################
+( ( ( pill distance + 550.7257467453858 ) / ( num adj walls * num adj walls ) ) - ( pill distance * fruit distance ) )

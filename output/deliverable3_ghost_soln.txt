@@ -1,0 +1,9 @@
+###################################
+# State Evaluator Tree (list format)
+###################################
+[<FunctionNodes.MULTIPLY: 2>, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+###################################
+# State Evaluator Equation
+###################################
+( pacman distance * pacman distance )
