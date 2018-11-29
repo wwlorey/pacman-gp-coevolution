@@ -1,9 +1,9 @@
 ###################################
 # State Evaluator Tree (list format)
 ###################################
-[<FunctionNodes.MULTIPLY: 2>, 875.8504841386815, <TerminalNodes.NEAREST_GHOST_DIST: 1>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+[<FunctionNodes.RANDOM_FLOAT: 4>, <FunctionNodes.SUBTRACT: 1>, <FunctionNodes.ADD: 0>, 152.98538961425234, <TerminalNodes.NEAREST_GHOST_DIST: 1>, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, 247.90743483111922, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
 
 ###################################
 # State Evaluator Equation
 ###################################
-( 875.8504841386815 * ghost distance )
+( ( 152.98538961425234 - ghost distance ) rand ( pacman distance + 247.90743483111922 ) )
