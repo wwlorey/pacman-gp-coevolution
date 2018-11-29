@@ -1,0 +1,13 @@
+###################################
+# State Evaluator Tree (list format)
+###################################
+[<FunctionNodes.SUBTRACT: 1>, <TerminalNodes.NEAREST_GHOST_DIST: 1>, <TerminalNodes.NEAREST_GHOST_DIST: 1>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+[<FunctionNodes.SUBTRACT: 1>, <FunctionNodes.ADD: 0>, <FunctionNodes.DIVIDE: 3>, 3.3432418854639767, 913.5653773452312, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, <TerminalNodes.NEAREST_GHOST_DIST: 1>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+[<FunctionNodes.ADD: 0>, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, 39.18947477751444, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+###################################
+# State Evaluator Equation
+###################################
+( ghost distance - ghost distance )
+( ( 3.3432418854639767 + 913.5653773452312 ) - ( pacman distance / ghost distance ) )
+( pacman distance + 39.18947477751444 )
