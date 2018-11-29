@@ -1,7 +1,8 @@
 log_file_paths = [
-                    'small',
-                    'BONUS_small',
-                    'BONUS_small_multi_controller'
+                    'deliverable1',
+                    'deliverable2',
+                    'deliverable3',
+                    'BONUS1'
                  ]
 
 
@@ -13,16 +14,16 @@ log_file_paths = ['../output/' + filename + '_log.txt' for filename in log_file_
 test_cases = \
     [
         (
-            '../output/BONUS_small_multi_controller_last_best_local_fits.txt',
-            '../output/BONUS_small_last_best_local_fits.txt'
+            '../output/deliverable1_last_best_local_fits.txt',
+            '../output/deliverable2_last_best_local_fits.txt'
         ),
         (
-            '../output/BONUS_small_multi_controller_last_best_local_fits.txt',
-            '../output/small_last_best_local_fits.txt'
+            '../output/deliverable2_last_best_local_fits.txt',
+            '../output/deliverable3_last_best_local_fits.txt'
         ),
         (
-            '../output/BONUS_small_last_best_local_fits.txt',
-            '../output/small_last_best_local_fits.txt'
+            '../output/deliverable1_last_best_local_fits.txt',
+            '../output/deliverable3_last_best_local_fits.txt'
         )
     ]
 

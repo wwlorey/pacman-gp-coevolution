@@ -4,22 +4,23 @@
 \resizebox{\textwidth}{!}{%        
 \begin{tabular}{|l|l|l|}           
 \hline               
-  & BONUS\_small\_multi\_controller & BONUS\_small  \\ \hline 
- mean & 142.96666666666667 & 101.1 \\ \hline 
- variance & 439.96555555555557 & 408.8233333333334 \\ \hline 
- standard deviation & 20.975355910104494 & 20.21938014216394 \\ \hline 
+  & deliverable1 & deliverable2  \\ \hline 
+ mean & 107.4 & 108.13333333333334 \\ \hline 
+ variance & 395.5733333333333 & 301.58222222222224 \\ \hline 
+ standard deviation & 19.88902544956221 & 17.366122832175932 \\ \hline 
  observations & 30 & 30 \\ \hline 
  df & 29 & 29 \\ \hline 
- F & 1.0761752563590357 &   \\ \hline 
+ F & 1.3116599858523932 &   \\ \hline 
  F critical & 0.5373999648406917 &   \\ \hline 
- Unequal variances assumed &  &    \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
   &  &     \\ \hline 
   observations & 30 &  \\ \hline 
-  df & 31 &  \\ \hline 
-  t Stat & 7.738691619777811 &  \\ \hline 
-  P two-tail & 1.694665580406777e-10 &  \\ \hline 
-  t Critical two-tail & 2.0395 &  \\ \hline 
-  BONUS\_small\_multi\_controller is statistically better than BONUS\_small &  &   \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & -0.14956692976611996 &  \\ \hline 
+  P two-tail & 0.8816251806191939 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  Nether deliverable2 nor & & \\
+ deliverable1 is statistically better &  &   \\ \hline 
   \end{tabular}%     
 }                    
 \end{table}
@@ -30,22 +31,22 @@
 \resizebox{\textwidth}{!}{%        
 \begin{tabular}{|l|l|l|}           
 \hline               
-  & BONUS\_small\_multi\_controller & small  \\ \hline 
- mean & 142.96666666666667 & 101.0 \\ \hline 
- variance & 439.96555555555557 & 494.46666666666664 \\ \hline 
- standard deviation & 20.975355910104494 & 22.23660645572221 \\ \hline 
+  & deliverable2 & deliverable3  \\ \hline 
+ mean & 108.13333333333334 & 124.56666666666666 \\ \hline 
+ variance & 301.58222222222224 & 578.5788888888889 \\ \hline 
+ standard deviation & 17.366122832175932 & 24.05366684912903 \\ \hline 
  observations & 30 & 30 \\ \hline 
  df & 29 & 29 \\ \hline 
- F & 0.8897779875061795 &   \\ \hline 
+ F & 0.5212465024456475 &   \\ \hline 
  F critical & 0.5373999648406917 &   \\ \hline 
  Unequal variances assumed &  &    \\ \hline 
   &  &     \\ \hline 
   observations & 30 &  \\ \hline 
   df & 31 &  \\ \hline 
-  t Stat & 7.393150913824469 &  \\ \hline 
-  P two-tail & 6.520299920112773e-10 &  \\ \hline 
+  t Stat & -2.9829335278061286 &  \\ \hline 
+  P two-tail & 0.004315231188237327 &  \\ \hline 
   t Critical two-tail & 2.0395 &  \\ \hline 
-  BONUS\_small\_multi\_controller is statistically better than small &  &   \\ \hline 
+  deliverable3 is statistically better than deliverable2 &  &   \\ \hline 
   \end{tabular}%     
 }                    
 \end{table}
@@ -56,23 +57,22 @@
 \resizebox{\textwidth}{!}{%        
 \begin{tabular}{|l|l|l|}           
 \hline               
-  & BONUS\_small & small  \\ \hline 
- mean & 101.1 & 101.0 \\ \hline 
- variance & 408.8233333333334 & 494.46666666666664 \\ \hline 
- standard deviation & 20.21938014216394 & 22.23660645572221 \\ \hline 
+  & deliverable1 & deliverable3  \\ \hline 
+ mean & 107.4 & 124.56666666666666 \\ \hline 
+ variance & 395.5733333333333 & 578.5788888888889 \\ \hline 
+ standard deviation & 19.88902544956221 & 24.05366684912903 \\ \hline 
  observations & 30 & 30 \\ \hline 
  df & 29 & 29 \\ \hline 
- F & 0.8267965484697318 &   \\ \hline 
+ F & 0.6836981800234675 &   \\ \hline 
  F critical & 0.5373999648406917 &   \\ \hline 
- Unequal variances assumed &  &    \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
   &  &     \\ \hline 
   observations & 30 &  \\ \hline 
-  df & 31 &  \\ \hline 
-  t Stat & 0.01791782942177858 &  \\ \hline 
-  P two-tail & 0.9857664534615012 &  \\ \hline 
-  t Critical two-tail & 2.0395 &  \\ \hline 
-  Nether small nor & & \\
- BONUS\_small is statistically better &  &   \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & -2.961907970931727 &  \\ \hline 
+  P two-tail & 0.004425906472211853 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  deliverable3 is statistically better than deliverable1 &  &   \\ \hline 
   \end{tabular}%     
 }                    
 \end{table}
