@@ -95,6 +95,7 @@ class GPacWorld:
         self.time_remaining = self.time_multiplier * self.width * self.height
         self.world_file.flush()
         self.num_pills_consumed = 0
+        self.num_fruit_consumed = 0
         self.score = 0
 
 
