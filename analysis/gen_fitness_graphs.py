@@ -6,10 +6,10 @@ import numpy as np
 
 log_file_paths = \
     [
-        '../output/small_log.txt',
-        '../output/large_log.txt',
-        '../output/BONUS_small_log.txt',
-        '../output/BONUS_small_multi_controller_log.txt'
+        '../output/deliverable1_log.txt',
+        '../output/deliverable2_log.txt',
+        '../output/deliverable3_log.txt',
+        '../output/BONUS1_log.txt'
     ]
 
 for log_file_index in range(len(log_file_paths)):
