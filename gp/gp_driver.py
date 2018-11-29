@@ -523,7 +523,7 @@ class GPDriver:
 
     def check_update_log_world_files(self):
         """Writes a new log file entry and writes a transcript of this run to the 
-        world file iff it had the global best score.
+        world file iff it had the local best score AND this is the last run.
         """
         best_pacman_fitness = -1 * ARBITRARY_LARGE_NUMBER
         best_ghost_fitness = -1 * ARBITRARY_LARGE_NUMBER
@@ -542,7 +542,7 @@ class GPDriver:
                 best_pacman = test_pairing[self.PACMAN_ID]
                 best_pacman_fitness = test_pairing[self.PACMAN_ID].fitness
                 best_pacman_world = test_pairing[self.WORLD_ID]
-            
+
             if test_pairing[self.GHOST_ID].fitness > best_ghost_fitness:
                 best_ghost = test_pairing[self.GHOST_ID]
                 best_ghost_fitness = test_pairing[self.GHOST_ID].fitness
@@ -554,12 +554,13 @@ class GPDriver:
         if best_pacman_fitness > self.local_best_pacman_fitness:
             self.local_best_pacman_fitness = best_pacman_fitness
 
+            if self.run_count == int(self.config.settings['num experiment runs']):
+                # Write to world file
+                best_pacman_world.world.world_file.write_to_file()
+
             # Determine if a new global best pacman fitness has been found
             if self.local_best_pacman_fitness > self.global_best_pacman_fitness:
                 self.global_best_pacman_fitness = self.local_best_pacman_fitness
-
-                # Write to world file
-                best_pacman_world.world.world_file.write_to_file()
 
                 # Write to solution file
                 self.soln.write_to_file(best_pacman.conts, 'pacman')
@@ -567,9 +568,6 @@ class GPDriver:
         # Determine if a new global best ghost fitness has been found
         if best_ghost_fitness > self.global_best_ghost_fitness:
             self.global_best_ghost_fitness = best_ghost_fitness
-
-            # Write to world file
-            best_ghost_world.world.world_file.write_to_file()
 
             # Write to solution file
             self.soln.write_to_file(best_ghost.conts, 'ghost')
