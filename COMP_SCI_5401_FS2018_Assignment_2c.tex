@@ -25,205 +25,37 @@
 
 \tableofcontents
 
-\section{Main Assignment Deliverables}
+\section{Methodology}
+Describe the custom parts of your EA design, such as your function and terminal sets,
+in sufficient detail to allow someone else to implement a functionally equivalent EA, and explain
+your EA design decisions.
 
-\begin{figure}[H]
-    \addgraphic{small}
-    \fitnessplotcaption{Small}{small.cfg}
-    \label{fig:small}
-\end{figure}
+\section{Experimental Setup}
+Provide your experimental setup in sufficient detail to allow exact duplication
+of your experiments (i.e., producing the exact same results within statistical margins) and justify
+your choice of EA strategy parameters.
 
-\begin{figure}[H]
-    \addgraphic{large}
-    \fitnessplotcaption{Large}{large.cfg}
-    \label{fig:large}
-\end{figure}
+\section{Results}
+List your experimental results in both tabular and graphical formats (box plots preferred)
+along with your statistical results, corresponding to the three configuration and log files, and six
+solution files, referenced above (so you’ll have three plots and a table containing your statistical
+comparison of the three combinations).
 
+\section{Discussion}
+Discuss your experimental and statistical results, providing valuable insights such as conjectures
+you induce from your results. Your choice of what to report on and how you go about
+rationalizing it is your subjective interpretation.
 
-\section{BONUS1: Multiple Pacmen Employing the Same Controller}
+\section{Conclusion}
+Conclude your report by stating your most important findings and insights in the conclusion
+section.
 
-Support for multiple pacmen was included the main assignment, however, all standard project 
-deliverables were supplied with only one pacman spawned. For BONUS1, two pacmen were
-spawned for each world, each employing the same controller. Both pacmen had to die
-for each game to end and both pacmen shared the fitness (or score) obtained after
-completing a game. To give the pacmen an opportunity for a sense of space relative to each other, 
-an additional terminal was 
-added to the GP tree's terminal set, namely the Manhattan distance between the 
-current pacman and the nearest other pacman.
+\section{Bibliography}
+This is where you provide your citation details, if you cited anything. Only list references
+here that you actually cite in your report.
 
-Changes from the main assignment to this bonus assignment involved a mixture of 
-cosmetic changes, such as renaming a function \texttt{move\_pacman} to \texttt{move\_pacmen}
-to better describe the situation, and real algorithmic changes. One such algorithmic
-change was the game over check. As per the bonus specification, each game would
-only end if all pacmen were dead, or if the other pre-existing conditions were met. 
-To satisfy this, As soon as a pacman was seen as
-either colliding with a ghost or sharing a cell with a ghost, it was removed from
-that world's list of pacmen. Only after the length of that list was zero would the game
-end, not including all pills being consumed and the time running out.
-
-Another algorithmic change involved adding an additional Manhattan distance terminal node
-for the distance to the nearest pacman. This was implemented by mirroring the implementation of existing
-distance terminal nodes, implementing another distance calculation. Since the main assignment 
-encoded a given world's pacman as a member of a list,
-adding additional pacmen was not particularly intensive.
-
-Figure \ref{fig:bonus_small} depicts the evaluations versus fitness for the experiments involving
-two pacmen per world employing the same controller. This figure offered fairly small variance with
-outliers demonstrated as performing far beyond the average of the population in some cases.
-
-Note that only the small world was used to examine BONUS1.
-
-\begin{figure}[H]
-    \addgraphic{BONUS_small}
-    \fitnessplotcaption{BONUS1 (Multiple Pacmen Employing the Same Controller) Small}{BONUS\_small.cfg}
-    \label{fig:bonus_small}
-\end{figure}
-
-
-\section{BONUS2: Multiple Pacmen Employing Different Controllers}
-
-The second bonus involved implementing support for multiple pacmen in a world as well
-as the ability for each pacman to be controlled by different controllers. This functionality
-in addition to the new game over check and terminal set addition discussed in the BONUS1 
-section was implemented.
-
-The implementation of this bonus section required more changes to the original codebase than BONUS1,
-as the ties between the pacman list associated with each world and the single pacman
-controller were stronger. The main way this dependency was removed was by creating 
-a list of pacman controllers to match the list of pacmen. A pacman list index was then passed along 
-with the game's state to the pacman controllers so that controller had a specific pacman
-to control. Code also had to be removed that allowed one controller to move all pacmen
-passed along in the game state, as each pacman now had its own controller.
-
-Because there were multiple controllers, functions such as the bloat controller had
-to be adjusted to handle multiple controller trees. Additionally, the recombination and mutation functions
-were updated so that each controller tree was involved in crossover and sub-tree mutation. 
-
-To maintain the relationship between pacman and controller, dead pacmen, instead of being
-removed from the pacman list, were noted in a taboo list. Before moving pacmen, this list
-would be polled to see if the current pacman being moved was dead. Once the length of the
-taboo list equaled the length of the pacman list, all pacmen in the world were known to be 
-dead.
-
-One additional change was made to satisfy this bonus section. The solution file generator
-was altered to output the controller of both pacmen upon the discovery of a globally optimal
-score.
-
-Figure \ref{fig:bonus_small_multi}, depicting the evaluations versus fitness for this bonus
-assignment with two independently-controlled pacmen per world, demonstrates volatile 
-variances and high outlying score values.
-
-Note that only the small world was used to examine BONUS2.
-
-
-\begin{figure}[H]
-    \addgraphic{BONUS_small_multi_controller}
-    \fitnessplotcaption{BONUS2 (Multiple Pacmen Employing Different Controllers) Small}{BONUS\_small\_multi\_controller.cfg}
-    \label{fig:bonus_small_multi}
-\end{figure}
-
-
-\section{Analysis of Main Assignment, BONUS1, and BONUS2}
-
-Three pairings of statistical analysis were performed on the main assignment GP, BONUS1, and BONUS2. This analysis
-consisted of an f-test to determine the assumption of equal variances followed by a t-test either assuming equal variances
-or assuming unequal variances depending on the output of the f-test. The pairings of statistical analysis are as follows:
-
-\begin{itemize}
-  \item BONUS1 Small, Multi-Pacman World versus BONUS2 Small, Multi-Pacman World Employing Multiple Controllers (Table \ref{bonus1_bonus2})
-  \item BONUS2 Small, Multi-Pacman World Employing Multiple Controllers versus Small, Single-Pacman World (Table \ref{bonus2_std})
-  \item BONUS1 Small, Multi-Pacman World versus Small, Single-Pacman World (Table \ref{bonus1_std})
-\end{itemize}
-
-In each analysis it was involved in (Tables \ref{bonus1_bonus2} and \ref{bonus2_std}), the BONUS2 approach, 
-employing multiple pacmen each with their own controller,
-proved to be statistically superior on the given problem space. This implies that the pacmen controllers could have evolved
-in tandem to ensure cooperation between pacmen in getting the highest possible score.
-
-Another interesting observation is that when the standard GP employing a single pacman was compared to BONUS1, employing multiple
-pacmen and one pacman controller (Table \ref{bonus1_std}), there was no statistical difference between the two approaches.
-This result showed that more pacmen, all controlled by the same controller, are not necessarily more optimal than one pacman
-controlled by one controller and that to see the gains of more pacmen in the world, alternate controller approaches (such
-as using different controllers for each pacman, as seen in BONUS2) may be necessary.
-
-
-\begin{table}[H] 
-\tablecaption{BONUS1 Small, Multi-Pacman World versus BONUS2 Small, Multi-Pacman World Employing Multiple Controllers}        
-\label{bonus1_bonus2}                 
-\resizebox{\textwidth}{!}{%        
-\begin{tabular}{|l|l|l|}           
-\hline               
-  & BONUS\_small\_multi\_controller & BONUS\_small  \\ \hline 
- mean & 142.96666666666667 & 101.1 \\ \hline 
- variance & 439.96555555555557 & 408.8233333333334 \\ \hline 
- standard deviation & 20.975355910104494 & 20.21938014216394 \\ \hline 
- observations & 30 & 30 \\ \hline 
- df & 29 & 29 \\ \hline 
- F & 1.0761752563590357 &   \\ \hline 
- F critical & 0.5373999648406917 &   \\ \hline 
- Unequal variances assumed &  &    \\ \hline 
-  &  &     \\ \hline 
-  observations & 30 &  \\ \hline 
-  df & 31 &  \\ \hline 
-  t Stat & 7.738691619777811 &  \\ \hline 
-  P two-tail & 1.694665580406777e-10 &  \\ \hline 
-  t Critical two-tail & 2.0395 &  \\ \hline 
-  BONUS\_small\_multi\_controller is statistically better than BONUS\_small &  &   \\ \hline 
-  \end{tabular}%     
-}                    
-\end{table}
-
-\begin{table}[H] 
-\tablecaption{BONUS2 Small, Multi-Pacman World Employing Multiple Controllers versus Small, Single-Pacman World}        
-\label{bonus2_std}                 
-\resizebox{\textwidth}{!}{%        
-\begin{tabular}{|l|l|l|}           
-\hline               
-  & BONUS\_small\_multi\_controller & small  \\ \hline 
- mean & 142.96666666666667 & 101.0 \\ \hline 
- variance & 439.96555555555557 & 494.46666666666664 \\ \hline 
- standard deviation & 20.975355910104494 & 22.23660645572221 \\ \hline 
- observations & 30 & 30 \\ \hline 
- df & 29 & 29 \\ \hline 
- F & 0.8897779875061795 &   \\ \hline 
- F critical & 0.5373999648406917 &   \\ \hline 
- Unequal variances assumed &  &    \\ \hline 
-  &  &     \\ \hline 
-  observations & 30 &  \\ \hline 
-  df & 31 &  \\ \hline 
-  t Stat & 7.393150913824469 &  \\ \hline 
-  P two-tail & 6.520299920112773e-10 &  \\ \hline 
-  t Critical two-tail & 2.0395 &  \\ \hline 
-  BONUS\_small\_multi\_controller is statistically better than small &  &   \\ \hline 
-  \end{tabular}%     
-}                    
-\end{table}
-
-\begin{table}[H] 
-\tablecaption{BONUS1 Small, Multi-Pacman World versus Small, Single-Pacman World}
-\label{bonus1_std}                 
-\resizebox{\textwidth}{!}{%        
-\begin{tabular}{|l|l|l|}           
-\hline               
-  & BONUS\_small & small  \\ \hline 
- mean & 101.1 & 101.0 \\ \hline 
- variance & 408.8233333333334 & 494.46666666666664 \\ \hline 
- standard deviation & 20.21938014216394 & 22.23660645572221 \\ \hline 
- observations & 30 & 30 \\ \hline 
- df & 29 & 29 \\ \hline 
- F & 0.8267965484697318 &   \\ \hline 
- F critical & 0.5373999648406917 &   \\ \hline 
- Unequal variances assumed &  &    \\ \hline 
-  &  &     \\ \hline 
-  observations & 30 &  \\ \hline 
-  df & 31 &  \\ \hline 
-  t Stat & 0.01791782942177858 &  \\ \hline 
-  P two-tail & 0.9857664534615012 &  \\ \hline 
-  t Critical two-tail & 2.0395 &  \\ \hline 
-  Nether small nor & & \\
- BONUS\_small is statistically better &  &   \\ \hline 
-  \end{tabular}%     
-}                    
-\end{table}
+\section{Appendices}
+If you have more data you want to show than what you could reasonably fit in the body
+of your report, this is the place to put it along with a short description.
 
 \end{document}
