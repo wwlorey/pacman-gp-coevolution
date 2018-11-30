@@ -2,7 +2,9 @@ log_file_paths = [
                     'deliverable1',
                     'deliverable2',
                     'deliverable3',
-                    'BONUS1'
+                    'BONUS1',
+                    'BONUS2a',
+                    'BONUS2b'
                  ]
 
 

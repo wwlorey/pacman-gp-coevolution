@@ -3,14 +3,9 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
+import analysis_config
 
-log_file_paths = \
-    [
-        '../output/deliverable1_log.txt',
-        '../output/deliverable2_log.txt',
-        '../output/deliverable3_log.txt',
-        '../output/BONUS1_log.txt'
-    ]
+log_file_paths = analysis_config.log_file_paths
 
 for log_file_index in range(len(log_file_paths)):
     with open(log_file_paths[log_file_index], 'r') as log_file:
