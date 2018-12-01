@@ -1,4 +1,27 @@
 #################################
+# Notes on the BONUS Sections #
+#################################
+
+For this assignment, the following bonus assignments were completed:
+
+* BONUS1: Single pacman, multiple ghosts employing different controllers
+* BONUS2a: Multiple pacmen employing the same controller, multiple ghosts employing the same controller
+* BONUS2b: Multiple pacmen employing different controllers, multiple ghosts employing the same controller
+* BONUS2c: Multiple pacmen employing the same controller, multiple ghosts employing different controllers
+
+[//]: <> (* BONUS2d: Multiple pacmen employing different controllers, multiple ghosts employing different controllers)
+
+To satisfy the above bonus assignments, configuration parameters
+were added to programmatically switch between pacman/ghost controller
+multiplicity and the number of pacmen used in each world. Configuration files,
+output files, and figures each named in accordance to the BONUS* labels above
+have been included to satisfy the bonus assignment requirements.
+
+Additionally, code that differs as part of the main assignment implementation is noted 
+in the source code using comments (e.g. `# BONUS1`, `# BONUS2*, or '# BONUS1, BONUS2*` depending
+on what bonus the code satisfies).
+
+#################################
 #	Coding Standards	#
 #################################
 
