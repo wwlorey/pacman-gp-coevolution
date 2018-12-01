@@ -32,6 +32,18 @@ test_cases = \
             '../output/BONUS1_last_best_local_fits.txt',
             '../output/deliverable1_last_best_local_fits.txt'
         ),
+        (
+            '../output/BONUS2a_last_best_local_fits.txt',
+            '../output/BONUS2b_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2b_last_best_local_fits.txt',
+            '../output/BONUS2c_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2a_last_best_local_fits.txt',
+            '../output/BONUS2c_last_best_local_fits.txt'
+        ),
     ]
 
 
