@@ -1,0 +1,9 @@
+###################################
+# State Evaluator Tree (list format)
+###################################
+[<FunctionNodes.DIVIDE: 3>, <FunctionNodes.ADD: 0>, <FunctionNodes.RANDOM_FLOAT: 4>, 769.2967113836017, <TerminalNodes.PACMAN_FRUIT_DIST: 2>, <TerminalNodes.PACMAN_FRUIT_DIST: 2>, <TerminalNodes.PACMAN_PILL_DIST: 1>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+###################################
+# State Evaluator Equation
+###################################
+( ( 769.2967113836017 + fruit distance ) / ( fruit distance rand pill distance ) )
