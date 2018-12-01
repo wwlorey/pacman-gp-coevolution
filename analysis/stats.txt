@@ -55,3 +55,22 @@ deliverable3 is statistically better than deliverable1
 
 
 
+ ,BONUS1, deliverable1
+mean, 111.4, 107.4
+variance, 862.0400000000001, 395.5733333333333
+standard deviation, 29.360517706607286, 19.88902544956221
+observations, 30, 30
+df, 29, 29
+F, 2.179216664419577
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 0.6074148757553575
+P two-tail, 0.5462715238455983
+t Critical two-tail, 2.0395
+Nether deliverable1 nor BONUS1 is statistically better
+
+
+

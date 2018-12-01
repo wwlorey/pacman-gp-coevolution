@@ -77,3 +77,30 @@
 }                    
 \end{table}
 
+\begin{table}[] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS1 & deliverable1  \\ \hline 
+ mean & 111.4 & 107.4 \\ \hline 
+ variance & 862.0400000000001 & 395.5733333333333 \\ \hline 
+ standard deviation & 29.360517706607286 & 19.88902544956221 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 2.179216664419577 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 0.6074148757553575 &  \\ \hline 
+  P two-tail & 0.5462715238455983 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  Nether deliverable1 nor & & \\
+ BONUS1 is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+

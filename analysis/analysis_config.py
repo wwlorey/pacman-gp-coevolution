@@ -26,7 +26,11 @@ test_cases = \
         (
             '../output/deliverable1_last_best_local_fits.txt',
             '../output/deliverable3_last_best_local_fits.txt'
-        )
+        ),
+        (
+            '../output/BONUS1_last_best_local_fits.txt',
+            '../output/deliverable1_last_best_local_fits.txt'
+        ),
     ]
 
 
