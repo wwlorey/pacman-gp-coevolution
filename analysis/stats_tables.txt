@@ -1,4 +1,4 @@
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -25,7 +25,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -51,7 +51,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -77,7 +77,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -104,7 +104,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -130,7 +130,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -157,7 +157,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        

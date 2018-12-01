@@ -9,11 +9,11 @@
 \setcounter{secnumdepth}{0}
 
 % Command definitions 
-\newcommand{\fitnessplotcaption}[2]{\caption{Global Best Fitness versus Fitness Evaluations for the \textbf{{#1}}, Randomly Generated World. The figure was generated with data obtained by running the GP with the \textbf{{#2}} configuration file.}}
+\newcommand{\fitnessplotcaption}[2]{\caption{Global Best Fitness versus Fitness Evaluations for the \textbf{{#1}}, Randomly Generated Worlds. The figure was generated with data obtained by running the GP with the \textbf{{#2}} configuration file.}}
 
 \newcommand{\addgraphic}[1]{\centerline{\includegraphics[scale=0.7]{output/#1_graph.png}}}
 
-\newcommand{\tablecaption}[1]{\caption{Statistical Analysis performed on the {#1}}}
+\newcommand{\tablecaption}[1]{\caption{Statistical Analysis performed on {#1}}}
 
 \title{COMP SCI 5401 FS2018 Assignment 2c}
 \author{William  Lorey \\ wwlytc@mst.edu}
@@ -63,5 +63,233 @@ here that you actually cite in your report.
 \section{Appendices}
 If you have more data you want to show than what you could reasonably fit in the body
 of your report, this is the place to put it along with a short description.
+
+\begin{figure}[H]
+    \addgraphic{deliverable1}
+    \fitnessplotcaption{(Deliverable 1)}{deliverable1.cfg}
+    \label{fig:deliverable1}
+\end{figure}
+
+\begin{figure}[H]
+    \addgraphic{deliverable2}
+    \fitnessplotcaption{(Deliverable 2)}{deliverable2.cfg}
+    \label{fig:deliverable2}
+\end{figure}
+
+\begin{figure}[H]
+    \addgraphic{deliverable3}
+    \fitnessplotcaption{(Deliverable 3)}{deliverable3.cfg}
+    \label{fig:deliverable3}
+\end{figure}
+
+\begin{figure}[H]
+    \addgraphic{BONUS1}
+    \fitnessplotcaption{BONUS1}{BONUS1.cfg}
+    \label{fig:BONUS1}
+\end{figure}
+
+\begin{figure}[H]
+    \addgraphic{BONUS2a}
+    \fitnessplotcaption{BONUS2a}{BONUS2a.cfg}
+    \label{fig:BONUS2a}
+\end{figure}
+
+\begin{figure}[H]
+    \addgraphic{BONUS2b}
+    \fitnessplotcaption{BONUS2b}{BONUS2b.cfg}
+    \label{fig:BONUS2b}
+\end{figure}
+
+\begin{figure}[H]
+    \addgraphic{BONUS2c}
+    \fitnessplotcaption{BONUS2c}{BONUS2c.cfg}
+    \label{fig:BONUS2c}
+\end{figure}
+
+\begin{table}[H] 
+\tablecaption{Deliverable 1 and Deliverable 2}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & deliverable1 & deliverable2  \\ \hline 
+ mean & 107.4 & 108.13333333333334 \\ \hline 
+ variance & 395.5733333333333 & 301.58222222222224 \\ \hline 
+ standard deviation & 19.88902544956221 & 17.366122832175932 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 1.3116599858523932 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & -0.14956692976611996 &  \\ \hline 
+  P two-tail & 0.8816251806191939 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  Nether deliverable2 nor & & \\
+ deliverable1 is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{Deliverable 2 and Deliverable 3}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & deliverable2 & deliverable3  \\ \hline 
+ mean & 108.13333333333334 & 124.56666666666666 \\ \hline 
+ variance & 301.58222222222224 & 578.5788888888889 \\ \hline 
+ standard deviation & 17.366122832175932 & 24.05366684912903 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 0.5212465024456475 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & -2.9829335278061286 &  \\ \hline 
+  P two-tail & 0.004315231188237327 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  deliverable3 is statistically better than deliverable2 &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{Deliverable 1 and Deliverable 3}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & deliverable1 & deliverable3  \\ \hline 
+ mean & 107.4 & 124.56666666666666 \\ \hline 
+ variance & 395.5733333333333 & 578.5788888888889 \\ \hline 
+ standard deviation & 19.88902544956221 & 24.05366684912903 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 0.6836981800234675 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & -2.961907970931727 &  \\ \hline 
+  P two-tail & 0.004425906472211853 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  deliverable3 is statistically better than deliverable1 &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{BONUS1 and Deliverable 1}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS1 & deliverable1  \\ \hline 
+ mean & 111.4 & 107.4 \\ \hline 
+ variance & 862.0400000000001 & 395.5733333333333 \\ \hline 
+ standard deviation & 29.360517706607286 & 19.88902544956221 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 2.179216664419577 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 0.6074148757553575 &  \\ \hline 
+  P two-tail & 0.5462715238455983 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  Nether deliverable1 nor & & \\
+ BONUS1 is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{BONUS2a and BONUS2b}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2a & BONUS2b  \\ \hline 
+ mean & 140.7 & 127.6 \\ \hline 
+ variance & 342.47666666666663 & 784.9733333333332 \\ \hline 
+ standard deviation & 18.506125112153182 & 28.017375561128727 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 0.4362908294124641 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & 2.1009786982574874 &  \\ \hline 
+  P two-tail & 0.03999926723492717 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  BONUS2a is statistically better than BONUS2b &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{BONUS2b and BONUS2c}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2b & BONUS2c  \\ \hline 
+ mean & 127.6 & 135.9 \\ \hline 
+ variance & 784.9733333333332 & 478.02333333333337 \\ \hline 
+ standard deviation & 28.017375561128727 & 21.8637447234762 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 1.6421234667763773 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & -1.2576968962023538 &  \\ \hline 
+  P two-tail & 0.2135417162246614 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  Nether BONUS2c nor & & \\
+ BONUS2b is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{BONUS2a and BONUS2c}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2a & BONUS2c  \\ \hline 
+ mean & 140.7 & 135.9 \\ \hline 
+ variance & 342.47666666666663 & 478.02333333333337 \\ \hline 
+ standard deviation & 18.506125112153182 & 21.8637447234762 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 0.7164434093175367 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 0.9024038585626759 &  \\ \hline 
+  P two-tail & 0.3706762522069167 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  Nether BONUS2c nor & & \\
+ BONUS2a is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
 
 \end{document}
