@@ -28,6 +28,7 @@ class Solution:
         with open(file_name, 'w') as file:
             file.write(LIST_HEADER_STR)
             
+            # BONUS1, BONUS2*
             for cont in conts:
                 file.write(str([n.value for n in cont.state_evaluator]))
                 file.write('\n')

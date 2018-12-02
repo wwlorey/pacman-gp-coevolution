@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # '+' indicates index at which to place tabular data
-table_template = r'\begin{table}[] \
+table_template = r'\begin{table}[H] \
 \tablecaption{TODO caption}        \
 \label{TODO label}                 \
 \resizebox{\textwidth}{!}{%        \

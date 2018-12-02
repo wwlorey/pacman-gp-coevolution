@@ -1,4 +1,4 @@
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -25,7 +25,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -51,7 +51,7 @@
 }                    
 \end{table}
 
-\begin{table}[] 
+\begin{table}[H] 
 \tablecaption{TODO caption}        
 \label{TODO label}                 
 \resizebox{\textwidth}{!}{%        
@@ -73,6 +73,113 @@
   P two-tail & 0.004425906472211853 &  \\ \hline 
   t Critical two-tail & 2.0017 &  \\ \hline 
   deliverable3 is statistically better than deliverable1 &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS1 & deliverable1  \\ \hline 
+ mean & 111.4 & 107.4 \\ \hline 
+ variance & 862.0400000000001 & 395.5733333333333 \\ \hline 
+ standard deviation & 29.360517706607286 & 19.88902544956221 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 2.179216664419577 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 0.6074148757553575 &  \\ \hline 
+  P two-tail & 0.5462715238455983 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  Nether deliverable1 nor & & \\
+ BONUS1 is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2a & BONUS2b  \\ \hline 
+ mean & 140.7 & 127.6 \\ \hline 
+ variance & 342.47666666666663 & 784.9733333333332 \\ \hline 
+ standard deviation & 18.506125112153182 & 28.017375561128727 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 0.4362908294124641 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & 2.1009786982574874 &  \\ \hline 
+  P two-tail & 0.03999926723492717 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  BONUS2a is statistically better than BONUS2b &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2b & BONUS2c  \\ \hline 
+ mean & 127.6 & 135.9 \\ \hline 
+ variance & 784.9733333333332 & 478.02333333333337 \\ \hline 
+ standard deviation & 28.017375561128727 & 21.8637447234762 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 1.6421234667763773 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Equal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 58 &  \\ \hline 
+  t Stat & -1.2576968962023538 &  \\ \hline 
+  P two-tail & 0.2135417162246614 &  \\ \hline 
+  t Critical two-tail & 2.0017 &  \\ \hline 
+  Nether BONUS2c nor & & \\
+ BONUS2b is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2a & BONUS2c  \\ \hline 
+ mean & 140.7 & 135.9 \\ \hline 
+ variance & 342.47666666666663 & 478.02333333333337 \\ \hline 
+ standard deviation & 18.506125112153182 & 21.8637447234762 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 0.7164434093175367 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 0.9024038585626759 &  \\ \hline 
+  P two-tail & 0.3706762522069167 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  Nether BONUS2c nor & & \\
+ BONUS2a is statistically better &  &   \\ \hline 
   \end{tabular}%     
 }                    
 \end{table}

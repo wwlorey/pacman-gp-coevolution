@@ -55,3 +55,79 @@ deliverable3 is statistically better than deliverable1
 
 
 
+ ,BONUS1, deliverable1
+mean, 111.4, 107.4
+variance, 862.0400000000001, 395.5733333333333
+standard deviation, 29.360517706607286, 19.88902544956221
+observations, 30, 30
+df, 29, 29
+F, 2.179216664419577
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 0.6074148757553575
+P two-tail, 0.5462715238455983
+t Critical two-tail, 2.0395
+Nether deliverable1 nor BONUS1 is statistically better
+
+
+
+ ,BONUS2a, BONUS2b
+mean, 140.7, 127.6
+variance, 342.47666666666663, 784.9733333333332
+standard deviation, 18.506125112153182, 28.017375561128727
+observations, 30, 30
+df, 29, 29
+F, 0.4362908294124641
+F critical, 0.5373999648406917
+Equal variances assumed
+
+observations, 30
+df, 58
+t Stat, 2.1009786982574874
+P two-tail, 0.03999926723492717
+t Critical two-tail, 2.0017
+BONUS2a is statistically better than BONUS2b
+
+
+
+ ,BONUS2b, BONUS2c
+mean, 127.6, 135.9
+variance, 784.9733333333332, 478.02333333333337
+standard deviation, 28.017375561128727, 21.8637447234762
+observations, 30, 30
+df, 29, 29
+F, 1.6421234667763773
+F critical, 0.5373999648406917
+Equal variances assumed
+
+observations, 30
+df, 58
+t Stat, -1.2576968962023538
+P two-tail, 0.2135417162246614
+t Critical two-tail, 2.0017
+Nether BONUS2c nor BONUS2b is statistically better
+
+
+
+ ,BONUS2a, BONUS2c
+mean, 140.7, 135.9
+variance, 342.47666666666663, 478.02333333333337
+standard deviation, 18.506125112153182, 21.8637447234762
+observations, 30, 30
+df, 29, 29
+F, 0.7164434093175367
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 0.9024038585626759
+P two-tail, 0.3706762522069167
+t Critical two-tail, 2.0395
+Nether BONUS2c nor BONUS2a is statistically better
+
+
+

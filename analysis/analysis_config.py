@@ -4,7 +4,8 @@ log_file_paths = [
                     'deliverable3',
                     'BONUS1',
                     'BONUS2a',
-                    'BONUS2b'
+                    'BONUS2b',
+                    'BONUS2c'
                  ]
 
 
@@ -26,7 +27,23 @@ test_cases = \
         (
             '../output/deliverable1_last_best_local_fits.txt',
             '../output/deliverable3_last_best_local_fits.txt'
-        )
+        ),
+        (
+            '../output/BONUS1_last_best_local_fits.txt',
+            '../output/deliverable1_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2a_last_best_local_fits.txt',
+            '../output/BONUS2b_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2b_last_best_local_fits.txt',
+            '../output/BONUS2c_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2a_last_best_local_fits.txt',
+            '../output/BONUS2c_last_best_local_fits.txt'
+        ),
     ]
 
 

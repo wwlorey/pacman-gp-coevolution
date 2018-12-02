@@ -174,6 +174,7 @@ class PacmanController(base_controller_class.BaseController):
             elif object == 'fruit' and game_state.fruit_coord:
                 coords_to_search = game_state.fruit_coord
 
+            # BONUS2*
             elif object == 'pacman' and len(game_state.pacman_coords) > 1:
                 coords_to_search = [coord_class.Coordinate(c.x, c.y) for c in game_state.pacman_coords if not c.x == pacman_coord.x and not c.y == pacman_coord.y]
 
@@ -224,6 +225,8 @@ class PacmanController(base_controller_class.BaseController):
                 nonlocal pill_distance
                 nonlocal fruit_distance
                 nonlocal num_adj_walls
+
+                # BONUS2*
                 nonlocal pacman_distance
 
                 ret = 0
@@ -240,6 +243,7 @@ class PacmanController(base_controller_class.BaseController):
                 elif node.value == terminals.NUM_ADJ_WALLS:
                     ret = num_adj_walls
                 
+                # BONUS2*
                 elif node.value == terminals.NEAREST_PACMAN_DIST:
                     ret = pacman_distance
                 
@@ -283,6 +287,8 @@ class PacmanController(base_controller_class.BaseController):
         ghost_distance = get_nearest_distance(pacman_coord, 'ghost')
         pill_distance = get_nearest_distance(pacman_coord, 'pill')
         fruit_distance = get_nearest_distance(pacman_coord, 'fruit')
+
+        # BONUS2*
         pacman_distance = get_nearest_distance(pacman_coord, 'pacman')
         num_adj_walls = get_num_adj_walls(pacman_coord)
 

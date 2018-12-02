@@ -1,6 +1,7 @@
 from enum import Enum
 
 
+# BONUS2*
 class TerminalNodes(Enum):
     PACMAN_GHOST_DIST   = 0
     PACMAN_PILL_DIST    = 1
