@@ -137,19 +137,19 @@ viewed in the configuration files.
 
 The testable differences between deliverable configurations, for each deliverable, are as follows:
 
-\textbf{deliverable1}
+\textbf{Deliverable 1}
 \begin{itemize}[leftmargin=.8in]
     \item Parent Selection: Over-Selection
     \item Survival Selection: k-Tournament (k pacman = 5, k ghost = 5)
 \end{itemize}
 
-\textbf{deliverable2}
+\textbf{Deliverable 2}
 \begin{itemize}[leftmargin=.8in]
     \item Parent Selection: Fitness Proportional Selection (FPS)
     \item Survival Selection: k-Tournament (k pacman = 5, k ghost = 5)
 \end{itemize}
 
-\textbf{deliverable3}
+\textbf{Deliverable 3}
 \begin{itemize}[leftmargin=.8in]
     \item Parent Selection: Over-Selection
     \item Survival Selection: Truncation
@@ -171,9 +171,36 @@ along with your statistical results, corresponding to the three configuration an
 solution files, referenced above (so you’ll have three plots and a table containing your statistical
 comparison of the three combinations).
 
+Three configurations of the EA were run to generate experimental results. These configurations, as introduced in the 
+\textbf{Experimental Setup} section, were Deliverable 1: Over-Selection Parent 
+Selection and k-Tournament Survival Selection (Figure \ref{fig:deliverable1}), Deliverable 2: Fitness Proportional 
+Parent Selection and k-Tournament Survival Selection (Figure \ref{fig:deliverable2}), and Deliverable 3: Over-Selection Parent Selection 
+and Truncation Survival Selection (Figure \ref{fig:deliverable3}). Pairwise statistical comparisons were performed as follows:
+Deliverable 1 and Deliverable 2 (Table \ref{d1_d2}), Deliverable 2 and Deliverable 3 (Table \ref{d2_d3}), and Deliverable 1 and Deliverable
+3 (Table \ref{d1_d3}).
+
+The statistical analysis performed in these comparisons was done so on the final local best across thirty runs. The analysis consisted 
+of first an f-test which was used to determine the assumption of equal or unequal variances. Then, a t-test (either assuming equal or unequal
+variances based on the results of the f-test) was performed. This final test produced the result that either one configuration was
+statistically better than the other for the given problem space or that neither algorithm configuration was statistically better 
+for the given problem space.
+
+Comparing Deliverable 1 with Deliverable 2, the statistical analysis (Table \ref{d1_d2}) showed that neither algorithm 
+configuration is statistically better. Both configurations showed reasonably high variance, signaling that the stochastic algorithm's
+performance in both cases was fairly unpredictable. This result also shows that, all else held constant, switching between Over-Selection
+for parent selection and FPS does not produce tangible differences in performance. Both methods use a reasonably high selective pressure,
+but Over-Selection was created for very large GP tree populations. In the scope of this experiment, it is possible that the limited size
+of the GP populations rendered the Over-Selection method to be less effective in optimally choosing parents.
+
+Table \ref{d2_d3} and Table \ref{d1_d3} each compare Deliverable 3 with Deliverable 1 and Deliverable 2 respectively. In both cases, the
+algorithm configured with Deliverable 3 was proven to be statistically better for the given problem space. Interestingly, the high variance of
+Deliverable 3 may have helped prove it as a more optimal configuration. While more sub-optimal solutions were found with Deliverable 3,
+there were also many exceedingly optimal solutions found. 
+
+
 \begin{figure}[H]
     \addgraphic{deliverable1}
-    \fitnessplotcaption{Over-Selection Parent Selection and  k-Tournament Survival Selection (Deliverable 1)}{deliverable1.cfg}
+    \fitnessplotcaption{Over-Selection Parent Selection and k-Tournament Survival Selection (Deliverable 1)}{deliverable1.cfg}
     \label{fig:deliverable1}
 \end{figure}
 
