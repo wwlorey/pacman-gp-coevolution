@@ -4,6 +4,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{float}
+\usepackage{enumitem}
 
 % Prevent heading numbers
 \setcounter{secnumdepth}{0}
@@ -86,10 +87,6 @@ the process easy to understand and implement while providing stochastic pairing 
 
 
 \section{Experimental Setup}
-Provide your experimental setup in sufficient detail to allow exact duplication
-of your experiments (i.e., producing the exact same results within statistical margins) and justify
-your choice of EA strategy parameters.
-
 All experiments for this assignment were run using custom configuration files, with each file
 testing the algorithm against a slightly different set of parameters. Each configuration that was employed is included
 as part of the git repository in the \texttt{config} directory. The experiments themselves were each run on one of the S\&T campus
@@ -108,6 +105,66 @@ Where \texttt{config\_file.cfg} could be replaced with any configuration file in
 omitted entirely. In the case where the configuration file is omitted, \texttt{config/default.cfg} would be used 
 as the configuration file.
 
+To directly reproduce experiments, a configuration option to use a provided random number seed has been included. In each log
+file generated after an experiment run, the seed used as part of that experiment is saved. To use a seed to reproduce
+an experiment, modify the following fields like so:
+
+\vspace{5mm}
+
+\texttt{use external seed = True}
+
+\texttt{default seed = \textit{<insert seed value here>}}
+
+\vspace{5mm}
+
+The three varying configurations test as part of this assignment's deliverables were all configured with the following
+\textit{shared} parameters:
+
+\begin{itemize}
+    \item 30 runs
+    \item 2000 fitness evaluations
+    \item \( \mu \) pacman = 20
+    \item \( \lambda \) pacman = 60
+    \item \( \mu \) ghost = 20
+    \item \( \lambda \) ghost = 60
+    \item comma survival strategy for ghosts and pacmen
+    \item single controller single pacman
+    \item single controller for three ghosts
+\end{itemize}
+
+Other parameters exist that are not mentioned above that were excluded for brevity. These parameters can be 
+viewed in the configuration files.
+
+The testable differences between deliverable configurations, for each deliverable, are as follows:
+
+\textbf{deliverable1}
+\begin{itemize}[leftmargin=.8in]
+    \item Parent Selection: Over-Selection
+    \item Survival Selection: k-Tournament (k pacman = 5, k ghost = 5)
+\end{itemize}
+
+\textbf{deliverable2}
+\begin{itemize}[leftmargin=.8in]
+    \item Parent Selection: Fitness Proportional Selection (FPS)
+    \item Survival Selection: k-Tournament (k pacman = 5, k ghost = 5)
+\end{itemize}
+
+\textbf{deliverable3}
+\begin{itemize}[leftmargin=.8in]
+    \item Parent Selection: Over-Selection
+    \item Survival Selection: Truncation
+\end{itemize}
+
+Note that the selection methods chosen were applied to both parent and survival selection for pacman and the ghosts.
+
+Because the number of required configuration comparisons for this assignment was relatively small, parent and
+survival selections were chosen to be compared. They provide a coarse-grained exploration that can be
+performed with a minimal number of comparisons, and their impact on EA performance is of consequence. More fine-tuneable
+parameters could be explored, such as the parsimony coefficient of \texttt{k} in the k-Tournament Selection, and this exploration could be performed for both
+pacman and the ghosts and their interactions, but after considering the scope of this project, the aforementioned configuration
+comparisons were chosen instead.
+
+
 \section{Results}
 List your experimental results in both tabular and graphical formats (box plots preferred)
 along with your statistical results, corresponding to the three configuration and log files, and six
@@ -116,7 +173,7 @@ comparison of the three combinations).
 
 \begin{figure}[H]
     \addgraphic{deliverable1}
-    \fitnessplotcaption{Overselection Parent Selection and  k-Tournament Survival Selection (Deliverable 1)}{deliverable1.cfg}
+    \fitnessplotcaption{Over-Selection Parent Selection and  k-Tournament Survival Selection (Deliverable 1)}{deliverable1.cfg}
     \label{fig:deliverable1}
 \end{figure}
 
@@ -128,7 +185,7 @@ comparison of the three combinations).
 
 \begin{figure}[H]
     \addgraphic{deliverable3}
-    \fitnessplotcaption{Overselection Parent Selection and Truncation Survival Selection (Deliverable 3)}{deliverable3.cfg}
+    \fitnessplotcaption{Over-Selection Parent Selection and Truncation Survival Selection (Deliverable 3)}{deliverable3.cfg}
     \label{fig:deliverable3}
 \end{figure}
 
