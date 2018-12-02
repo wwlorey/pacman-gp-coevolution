@@ -1,9 +1,0 @@
-###################################
-# State Evaluator Tree (list format)
-###################################
-[<FunctionNodes.DIVIDE: 3>, <FunctionNodes.ADD: 0>, <FunctionNodes.ADD: 0>, 556.4795502522959, <TerminalNodes.NEAREST_GHOST_DIST: 1>, <TerminalNodes.NEAREST_PACMAN_DIST: 0>, 15.432892430772283, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
-
-###################################
-# State Evaluator Equation
-###################################
-( ( 556.4795502522959 + ghost distance ) / ( pacman distance + 15.432892430772283 ) )

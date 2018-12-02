@@ -1,0 +1,11 @@
+###################################
+# State Evaluator Tree (list format)
+###################################
+[<FunctionNodes.RANDOM_FLOAT: 4>, <TerminalNodes.PACMAN_PILL_DIST: 1>, <TerminalNodes.PACMAN_GHOST_DIST: 0>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+[<FunctionNodes.SUBTRACT: 1>, 953.4448459031204, <TerminalNodes.PACMAN_FRUIT_DIST: 2>, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None]
+
+###################################
+# State Evaluator Equation
+###################################
+( pill distance rand ghost distance )
+( 953.4448459031204 - fruit distance )
