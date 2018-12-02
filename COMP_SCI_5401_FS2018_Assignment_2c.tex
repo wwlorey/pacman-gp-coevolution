@@ -186,7 +186,7 @@ and Deliverable 2 respectively. In both cases, the
 algorithm configured with Deliverable 3 was proven to be statistically better for the given problem space. 
 Discussion regarding the results of these experiments can be found in the \textbf{Discussion} section.
 
-Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) can be
+Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) for the deliverable experiments can be
 found in the \texttt{output} directory in the git repository.
 
 \begin{figure}[H]
@@ -314,7 +314,27 @@ that for this algorithm employing GP, a high selective pressure helps produce op
 
 
 \section{BONUS1}
-TODO
+The first bonus involved experimenting with using a single pacman employing a single controller and multiple ghosts, 
+each employing a different controller.
+For ease of testing experiment cases such as this, user-configurable options were included which allow the user to choose
+(1) how many pacmen to test in each world and (2) the multiplicity of units to controllers, i.e. if each unit gets its own 
+controller or if all units of a given type share controllers.
+
+The BONUS1 experiment plot (Figure \ref{fig:BONUS1}) showed exceptionally high outlying fitness values with averages much
+lower than the outlying values, as if the multiple ghost controllers led to higher pacman fitness values. It was
+expected that multiple ghost controllers would lead to better ghosts with the capacity to work together, leading
+to worse pacman fitnesses.
+After visual inspection of the plots, it appeared as if the BONUS1 configuration would be 
+optimal when compared to the configuration with one controller for all ghosts.
+
+Statistical analysis was performed on the BONUS1 configuration with the deliverable1 configuration, as the only difference
+between the two configurations was the ghost, controller multiplicity, which led to a fair and narrow comparison. 
+The analysis (Table \ref{b1_d1}) proved that neither
+configuration was statistically optimal. This demonstrated that despite the optimal outlying values in BONUS1, an optimal 
+algorithm is not guaranteed because of it.
+
+Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) for BONUS1 can be
+found in the \texttt{output} directory in the git repository.
 
 \begin{figure}[H]
     \addgraphic{BONUS1}
@@ -351,6 +371,9 @@ TODO
 
 \section{BONUS2a, BONUS2b, BONUS2c, and BONUS2d}
 TODO
+
+Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) for BONUS2* can be
+found in the \texttt{output} directory in the git repository.
 
 \begin{figure}[H]
     \addgraphic{BONUS2a}
