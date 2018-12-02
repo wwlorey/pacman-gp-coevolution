@@ -184,3 +184,82 @@
 }                    
 \end{table}
 
+\begin{table}[H] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2a & BONUS2d  \\ \hline 
+ mean & 140.7 & 119.36666666666666 \\ \hline 
+ variance & 342.47666666666663 & 354.3655555555555 \\ \hline 
+ standard deviation & 18.506125112153182 & 18.82459974489645 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 0.9664502130568247 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 4.352016063471005 &  \\ \hline 
+  P two-tail & 5.5455771508607214e-05 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  BONUS2a is statistically better than BONUS2d &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2b & BONUS2d  \\ \hline 
+ mean & 127.6 & 119.36666666666666 \\ \hline 
+ variance & 784.9733333333332 & 354.3655555555555 \\ \hline 
+ standard deviation & 28.017375561128727 & 18.82459974489645 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 2.2151513346230667 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 1.313554924158955 &  \\ \hline 
+  P two-tail & 0.1949035354931222 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  Nether BONUS2d nor & & \\
+ BONUS2b is statistically better &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+
+\begin{table}[H] 
+\tablecaption{TODO caption}        
+\label{TODO label}                 
+\resizebox{\textwidth}{!}{%        
+\begin{tabular}{|l|l|l|}           
+\hline               
+  & BONUS2c & BONUS2d  \\ \hline 
+ mean & 135.9 & 119.36666666666666 \\ \hline 
+ variance & 478.02333333333337 & 354.3655555555555 \\ \hline 
+ standard deviation & 21.8637447234762 & 18.82459974489645 \\ \hline 
+ observations & 30 & 30 \\ \hline 
+ df & 29 & 29 \\ \hline 
+ F & 1.348955410138307 &   \\ \hline 
+ F critical & 0.5373999648406917 &   \\ \hline 
+ Unequal variances assumed &  &    \\ \hline 
+  &  &     \\ \hline 
+  observations & 30 &  \\ \hline 
+  df & 31 &  \\ \hline 
+  t Stat & 3.086002570767297 &  \\ \hline 
+  P two-tail & 0.0031343644838580814 &  \\ \hline 
+  t Critical two-tail & 2.0395 &  \\ \hline 
+  BONUS2c is statistically better than BONUS2d &  &   \\ \hline 
+  \end{tabular}%     
+}                    
+\end{table}
+

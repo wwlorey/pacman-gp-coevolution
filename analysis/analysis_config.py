@@ -5,15 +5,14 @@ log_file_paths = [
                     'BONUS1',
                     'BONUS2a',
                     'BONUS2b',
-                    'BONUS2c'
+                    'BONUS2c',
+                    'BONUS2d'
                  ]
 
 
 log_file_paths = ['../output/' + filename + '_log.txt' for filename in log_file_paths]
 
 
-# Compare general improvements between penalty function EA, repair function EA,
-# and plain-vanilla EA
 test_cases = \
     [
         (
@@ -43,6 +42,18 @@ test_cases = \
         (
             '../output/BONUS2a_last_best_local_fits.txt',
             '../output/BONUS2c_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2a_last_best_local_fits.txt',
+            '../output/BONUS2d_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2b_last_best_local_fits.txt',
+            '../output/BONUS2d_last_best_local_fits.txt'
+        ),
+        (
+            '../output/BONUS2c_last_best_local_fits.txt',
+            '../output/BONUS2d_last_best_local_fits.txt'
         ),
     ]
 

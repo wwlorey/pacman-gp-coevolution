@@ -131,3 +131,60 @@ Nether BONUS2c nor BONUS2a is statistically better
 
 
 
+ ,BONUS2a, BONUS2d
+mean, 140.7, 119.36666666666666
+variance, 342.47666666666663, 354.3655555555555
+standard deviation, 18.506125112153182, 18.82459974489645
+observations, 30, 30
+df, 29, 29
+F, 0.9664502130568247
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 4.352016063471005
+P two-tail, 5.5455771508607214e-05
+t Critical two-tail, 2.0395
+BONUS2a is statistically better than BONUS2d
+
+
+
+ ,BONUS2b, BONUS2d
+mean, 127.6, 119.36666666666666
+variance, 784.9733333333332, 354.3655555555555
+standard deviation, 28.017375561128727, 18.82459974489645
+observations, 30, 30
+df, 29, 29
+F, 2.2151513346230667
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 1.313554924158955
+P two-tail, 0.1949035354931222
+t Critical two-tail, 2.0395
+Nether BONUS2d nor BONUS2b is statistically better
+
+
+
+ ,BONUS2c, BONUS2d
+mean, 135.9, 119.36666666666666
+variance, 478.02333333333337, 354.3655555555555
+standard deviation, 21.8637447234762, 18.82459974489645
+observations, 30, 30
+df, 29, 29
+F, 1.348955410138307
+F critical, 0.5373999648406917
+Unequal variances assumed
+
+observations, 30
+df, 31
+t Stat, 3.086002570767297
+P two-tail, 0.0031343644838580814
+t Critical two-tail, 2.0395
+BONUS2c is statistically better than BONUS2d
+
+
+
