@@ -186,17 +186,13 @@ statistically better than the other for the given problem space or that neither 
 for the given problem space.
 
 Comparing Deliverable 1 with Deliverable 2, the statistical analysis (Table \ref{d1_d2}) showed that neither algorithm 
-configuration is statistically better. Both configurations showed reasonably high variance, signaling that the stochastic algorithm's
-performance in both cases was fairly unpredictable. This result also shows that, all else held constant, switching between Over-Selection
-for parent selection and FPS does not produce tangible differences in performance. Both methods use a reasonably high selective pressure,
-but Over-Selection was created for very large GP tree populations. In the scope of this experiment, it is possible that the limited size
-of the GP populations rendered the Over-Selection method to be less effective in optimally choosing parents.
+configuration is statistically better. Table \ref{d2_d3} and Table \ref{d1_d3} each compare Deliverable 3 with Deliverable 1 
+and Deliverable 2 respectively. In both cases, the
+algorithm configured with Deliverable 3 was proven to be statistically better for the given problem space. 
+Discussion regarding the results of these experiments can be found in the \textbf{Discussion} section.
 
-Table \ref{d2_d3} and Table \ref{d1_d3} each compare Deliverable 3 with Deliverable 1 and Deliverable 2 respectively. In both cases, the
-algorithm configured with Deliverable 3 was proven to be statistically better for the given problem space. Interestingly, the high variance of
-Deliverable 3 may have helped prove it as a more optimal configuration. While more sub-optimal solutions were found with Deliverable 3,
-there were also many exceedingly optimal solutions found. 
-
+Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) can be
+found in the \texttt{output} directory in the git repository.
 
 \begin{figure}[H]
     \addgraphic{deliverable1}
@@ -296,9 +292,31 @@ there were also many exceedingly optimal solutions found.
 \end{table}
 
 \section{Discussion}
-Discuss your experimental and statistical results, providing valuable insights such as conjectures
-you induce from your results. Your choice of what to report on and how you go about
-rationalizing it is your subjective interpretation.
+The result that neither Deliverable 1 nor Deliverable 2 is statistically better than each other shows that, 
+all else held constant, switching between Over-Selection and
+FPS for parent selection does not produce tangible differences in 
+performance. Additionally, both the Deliverable 1 and Deliverable 2 configurations showed reasonably high variance, 
+signaling that the stochastic algorithm's performance in both cases was fairly unpredictable. 
+Both methods use a reasonably high selective pressure,
+but the selection pressure could still be increased (for instance, by employing Truncation survival selection), which was 
+proven to produce a more optimal algorithm with the Deliverable 3 comparisons.
+
+Since Over-Selection was created for very large GP tree populations, it is possible that the limited size
+of the GP populations, in the scope of this experiment, rendered the Over-Selection method to 
+be less effective in optimally choosing parents, at least when paired with the
+other configuration parameters of Deliverable 1. However, this method when paired with Truncation survival
+selection in Deliverable 3 proved to be the most optimal configuration tested. The efficacy of GP paradigms 
+on their own is very hard if not impossible to judge. Configurations must be used alongside each other to properly 
+determine how effective they are.
+
+Interestingly, the high variance of Deliverable 3 may have helped prove it as a more optimal configuration. Deliverable 3 was 
+proven to be statistically superior to Deliverable 1 and Deliverable 2. While more sub-optimal solutions were found with Deliverable 3,
+there were also many consistent, exceedingly optimal solutions found. The optimality of the Deliverable 3 
+configuration can also be attributed to the fact that it employed a very high selection pressure in its parent and survival selections. Both
+the Over-Selection parent selection method and the Truncation survival selection method both inherently apply very high selection
+pressure, and when paired together, the selective pressure of the EA in general becomes quite high. This leads to the conclusion
+that for this algorithm employing GP, a high selective pressure helps produce optimal controllers.
+
 
 \section{BONUS1}
 TODO
