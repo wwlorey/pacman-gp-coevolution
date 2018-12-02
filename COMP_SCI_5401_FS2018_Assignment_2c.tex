@@ -26,14 +26,87 @@
 \tableofcontents
 
 \section{Methodology}
-Describe the custom parts of your EA design, such as your function and terminal sets,
-in sufficient detail to allow someone else to implement a functionally equivalent EA, and explain
-your EA design decisions.
+For assignment 2c, an Evolutionary Algorithm (EA) employing Genetic Programming (GP) alongside a 
+Coevolutionary Search was used to coevolve controllers to play pacman. 
+Controllers for both pacman and the ghosts were evolved in tandem.
+In addition to the implementation of standard EA and GP paradigms as outlined as part of the requirements for this assignment, 
+the custom parts of this EA include a controller tree mutation strategy, the function and terminal sets, and
+mechanics of pairing controllers with other controllers and also with pacman game worlds.
+
+Mutation was probabilistically performed (with a user-configurable probability) on each member of both
+controller populations (both for pacman and for the ghosts) following the completion of recombination 
+to obtain the child population members.
+The mutation itself was a sub-tree mutation. If mutation was determined to act on a population member, 
+it functioned by first selecting a random node from the controller tree. Then the sub-tree of the chosen
+node was 'nullified`. As the tree was stored as an array maintaining the heap property (each child node 
+can be found from the parent index in a predictable way), this functionality was required to set the value of 
+each node in the chosen sub-tree to a null value so rouge nodes would not impact the tree's functioning after 
+mutation. A 'grow` method was then applied to the chosen node, randomly adding \texttt{n} subsequent levels
+to the sub-tree, where the inclusive range of \texttt{n} was user-configurable. In this implementation,
+a full tree was grown from the chosen node, ensuring that leaf nodes were part of the terminal set and that
+interior nodes were part of the function set. This form of mutation was chosen due to its simplistic 
+nature and effectiveness in slightly modifying controllers with (typically) minimal destruction of the 
+original controller tree.
+
+In order for a GP tree to produce reasonable, predictable output, node selections from two sets of nodes were
+made: the function set of nodes and the terminal set of nodes. As taken from standard GP and backed up by logical reasoning,
+the GP tree in this assignment was constructed with function nodes always making up the interior nodes
+of the controller trees, and terminal nodes always making up the leaf nodes of the controller trees. The compatibility of nodes
+was also important. For ease of constructing and evaluating trees, all function nodes took two inputs of floating point
+numbers, and all terminal nodes evaluated to floating point numbers. This
+ensured that when trees were interpreted to produce a crisp numerical output, they could be compiled correctly without errors.
+
+The function nodes used for both the pacman and ghost controller trees were standard and provided as part of the assignment: 
+addition, subtraction, multiplication, division, and random (choose a random floating point number 
+within a given range). The implementation of these operations were straightforward except for division and
+random. For division, division by zero was protected for. If a number was to be divided by zero, the result
+would become zero. For the random operation, as implemented in python, a random selection made using a call
+to the \texttt{random} library required the lower bound to be smaller than the upper bound. This was solved
+by always supplying the minimum floating point value as the lower bound and the maximum floating point value
+as the upper bound.
+
+Terminal nodes differed for the pacman and ghost controllers. The pacman controllers used the following terminal nodes: 
+Manhattan distance between pacman and the nearest ghost, Manhattan distance between pacman and the nearest pill, Manhattan
+distance between pacman and the nearest fruit, number of walls adjacent to pacman, a floating point constant, and Manhattan
+distance to the nearest other pacman (for the BONUS2* assignments). These nodes were implemented in accordance with the 
+main assignment deliverables. One main comment about implementation particulars for the pacman nodes would be that if a fruit
+was not placed in the world, the distance to nearest fruit node would evaluate to a user-configurable arbitrary large number.
+Similarly for the ghost terminal nodes, which include the Manhattan distance to the nearest pacman, Manhattan distance to
+the nearest ghost, and a floating point constant, the majority of nodes were implemented as part of the main assignment deliverables.
+The floating point constant was not required for the ghost controller terminal nodes, but it seemed useful to include it, 
+as it may provide useful information to the controller while not increasing the search space drastically.
+
+To complete runs of the experiment, pairings of pacman controllers to ghost controllers had to be performed. To facilitate this
+process, a data structure was created which included the unit controller class and the fitness of that controller. Once both
+populations of controller-fitness objects were generated (either by the initial population generation or through recombination and mutation), the controllers
+were randomly paired by taking, for each index in both unordered populations, one controller from each population. To evaluate
+the controllers, each pairing was matched with a pacman world with its own generated wall and pill placements. The controllers were applied
+to this world by running a game to determine the controller fitnesses. This approach allowed for sufficient abstraction to keep 
+the process easy to understand and implement while providing stochastic pairing of controllers and pacman world.
+
 
 \section{Experimental Setup}
 Provide your experimental setup in sufficient detail to allow exact duplication
 of your experiments (i.e., producing the exact same results within statistical margins) and justify
 your choice of EA strategy parameters.
+
+All experiments for this assignment were run using custom configuration files, with each file
+testing the algorithm against a slightly different set of parameters. Each configuration that was employed is included
+as part of the git repository in the \texttt{config} directory. The experiments themselves were each run on one of the S\&T campus
+linux machines, with each employed machine running one EA on a time-shared basis with other users of the machines using them for their own
+purposes. 
+
+When employing a custom configuration file in experimentation, the following command (for example) was used:
+
+\vspace{5mm}
+
+{\centering \texttt{./run.sh config/config\_file.cfg}\par }
+
+\vspace{5mm}
+
+Where \texttt{config\_file.cfg} could be replaced with any configuration file in the \texttt{config} directory, or
+omitted entirely. In the case where the configuration file is omitted, \texttt{config/default.cfg} would be used 
+as the configuration file.
 
 \section{Results}
 List your experimental results in both tabular and graphical formats (box plots preferred)
