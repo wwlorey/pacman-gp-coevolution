@@ -83,7 +83,7 @@ populations of controller-fitness objects were generated (either by the initial 
 were randomly paired by taking, for each index in both unordered populations, one controller from each population. To evaluate
 the controllers, each pairing was matched with a pacman world with its own generated wall and pill placements. The controllers were applied
 to this world by running a game to determine the controller fitnesses. This approach allowed for sufficient abstraction to keep 
-the process easy to understand and implement while providing stochastic pairing of controllers and pacman world.
+the process easy to understand and implement while providing stochastic pairing of controllers and pacman worlds.
 
 
 \section{Experimental Setup}
@@ -107,7 +107,7 @@ as the configuration file.
 
 To directly reproduce experiments, a configuration option to use a provided random number seed has been included. In each log
 file generated after an experiment run, the seed used as part of that experiment is saved. To use a seed to reproduce
-an experiment, modify the following fields like so:
+an experiment, modify the following configuration file fields like so:
 
 \vspace{5mm}
 
@@ -117,7 +117,7 @@ an experiment, modify the following fields like so:
 
 \vspace{5mm}
 
-The three varying configurations test as part of this assignment's deliverables were all configured with the following
+The three varying configurations tested as part of this assignment's deliverables were all configured with the following
 \textit{shared} parameters:
 
 \begin{itemize}
@@ -128,7 +128,7 @@ The three varying configurations test as part of this assignment's deliverables 
     \item \( \mu \) ghost = 20
     \item \( \lambda \) ghost = 60
     \item comma survival strategy for ghosts and pacmen
-    \item single controller single pacman
+    \item single controller for single pacman
     \item single controller for three ghosts
 \end{itemize}
 
@@ -158,9 +158,9 @@ The testable differences between deliverable configurations, for each deliverabl
 Note that the selection methods chosen were applied to both parent and survival selection for pacman and the ghosts.
 
 Because the number of required configuration comparisons for this assignment was relatively small, parent and
-survival selections were chosen to be compared. They provide a coarse-grained exploration that can be
+survival selections were chosen to be compared. These parameters facilitate a coarse-grained exploration that can be
 performed with a minimal number of comparisons, and their impact on EA performance is of consequence. More fine-tuneable
-parameters could be explored, such as the parsimony coefficient of \texttt{k} in the k-Tournament Selection, and this exploration could be performed for both
+parameters could be explored, such as the parsimony coefficient or \texttt{k} in the k-Tournament Selection, and this exploration could be performed for both
 pacman and the ghosts and their interactions, but after considering the scope of this project, the aforementioned configuration
 comparisons were chosen instead.
 
@@ -174,14 +174,14 @@ and Truncation Survival Selection (Figure \ref{fig:deliverable3}). Pairwise stat
 Deliverable 1 and Deliverable 2 (Table \ref{d1_d2}), Deliverable 2 and Deliverable 3 (Table \ref{d2_d3}), and Deliverable 1 and Deliverable
 3 (Table \ref{d1_d3}).
 
-The statistical analysis performed in these comparisons was done so on the final local best across thirty runs. The analysis consisted 
+The statistical analysis performed in these comparisons was done so on the final local best pacman fitness across thirty runs. The analysis consisted 
 of first an f-test which was used to determine the assumption of equal or unequal variances. Then, a t-test (either assuming equal or unequal
 variances based on the results of the f-test) was performed. This final test produced the result that either one configuration was
 statistically better than the other for the given problem space or that neither algorithm configuration was statistically better 
 for the given problem space.
 
 Comparing Deliverable 1 with Deliverable 2, the statistical analysis (Table \ref{d1_d2}) showed that neither algorithm 
-configuration is statistically better. Table \ref{d2_d3} and Table \ref{d1_d3} each compare Deliverable 3 with Deliverable 1 
+configuration was statistically better. Table \ref{d2_d3} and Table \ref{d1_d3} each compare Deliverable 3 with Deliverable 1 
 and Deliverable 2 respectively. In both cases, the
 algorithm configured with Deliverable 3 was proven to be statistically better for the given problem space. 
 Discussion regarding the results of these experiments can be found in the \textbf{Discussion} section.
@@ -296,11 +296,11 @@ Both methods use a reasonably high selective pressure,
 but the selection pressure could still be increased (for instance, by employing Truncation survival selection), which was 
 proven to produce a more optimal algorithm with the Deliverable 3 comparisons.
 
-Since Over-Selection was created for very large GP tree populations, it is possible that the limited size
+Since the method of Over-Selection was created for very large GP tree populations, it is possible that the limited size
 of the GP populations, in the scope of this experiment, rendered the Over-Selection method to 
 be less effective in optimally choosing parents, at least when paired with the
 other configuration parameters of Deliverable 1. However, this method when paired with Truncation survival
-selection in Deliverable 3 proved to be the most optimal configuration tested. The efficacy of GP paradigms 
+selection in Deliverable 3 proved to be the most optimal configuration tested. The efficacy of individual GP configurations
 on their own is very hard if not impossible to judge. Configurations must be used alongside each other to properly 
 determine how effective they are.
 
@@ -327,7 +327,7 @@ to worse pacman fitnesses.
 After visual inspection of the plots, it appeared as if the BONUS1 configuration would be 
 optimal when compared to the configuration with one controller for all ghosts.
 
-Statistical analysis was performed on the BONUS1 configuration with the deliverable1 configuration, as the only difference
+Statistical analysis was performed on the BONUS1 configuration and the deliverable1 configuration, as the only difference
 between the two configurations was the ghost, controller multiplicity, which led to a fair and narrow comparison. 
 The analysis (Table \ref{b1_d1}) proved that neither
 configuration was statistically optimal. This demonstrated that despite the optimal outlying values in BONUS1, an optimal 
@@ -381,7 +381,7 @@ The following BONUS2 assignments were completed as part of this report:
 
 As discussed in the BONUS1 section, user-configurable options were included which allow the user to choose
 how many pacmen to test in each world and the multiplicity of units to controllers, making the process
-of testing multiple configurations of varying pacman count and unit, controller multiplicity more manageable.
+of testing multiple configurations of varying pacman count and unit/controller multiplicity more manageable.
 
 Each BONUS2 sub-part was experimentally run and the pacman fitness plots were each individually graphed. They
 can be found in Figure \ref{fig:BONUS2a} (BONUS2a), Figure \ref{fig:BONUS2b} (BONUS2b), Figure \ref{fig:BONUS2c}
@@ -594,11 +594,11 @@ found in the \texttt{output} directory in the git repository.
 
 \section{Conclusion}
 After completing this assignment and the related experimentation and analysis,
-it is apparent that the most optimal functioning of the EA implemented as part of
+it is apparent that the most optimal EA configuration implemented as part of
 the main assignment deliverables is optimal due to high selective pressure for its
-parent and survival selections. This ensures that cruft is cut away from the medium small
+parent and survival selections. This ensures that cruft is cut away from the medium-small
 population of individuals and that the most fit individual(s) in each generation are
-guaranteed to survive, driving up the success of discovering optimally fit individuals as the algorithm progresses.
+guaranteed to survive, driving up the success of discovering and keeping optimally fit individuals as the algorithm progresses.
 Additionally, it was observed that Genetic Programs can
 balloon both in time elapsed and in space required as problems scale. It is evident that in order to use GP algorithms
 in a meaningful way, appropriate optimizations, the use of parallelization, and proper machine
