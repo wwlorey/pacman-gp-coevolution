@@ -370,7 +370,41 @@ found in the \texttt{output} directory in the git repository.
 \end{table}
 
 \section{BONUS2a, BONUS2b, BONUS2c, and BONUS2d}
-TODO
+The following BONUS2 assignments were completed as part of this report:
+
+\begin{itemize}
+    \item BONUS2a: Multiple pacmen employing the same controller, multiple ghosts employing the same controller
+    \item BONUS2b: Multiple pacmen employing different controllers, multiple ghosts employing the same controller
+    \item BONUS2c: Multiple pacmen employing the same controller, multiple ghosts employing different controllers
+    \item BONUS2d: Multiple pacmen employing different controllers, multiple ghosts employing different controllers
+\end{itemize}
+
+As discussed in the BONUS1 section, user-configurable options were included which allow the user to choose
+how many pacmen to test in each world and the multiplicity of units to controllers, making the process
+of testing multiple configurations of varying pacman count and unit, controller multiplicity more manageable.
+
+Each BONUS2 sub-part was experimentally run and the pacman fitness plots were each individually graphed. They
+can be found in Figure \ref{fig:BONUS2a} (BONUS2a), Figure \ref{fig:BONUS2b} (BONUS2b), Figure \ref{fig:BONUS2c}
+(BONUS2c), and Figure \ref{fig:BONUS2d} (BONUS2d). Visually inspecting the fitness plots, they all showed 
+fairly high outlying values, signifying good algorithm performance, at least on the surface.
+
+To scientifically compare these configurations, pairwise statistical analysis was performed on all possible pairings
+of BONUS2 configurations. The pairings are as follows: BONUS2a vs BONUS2b (Table \ref{b2a_b2b}), 
+BONUS2a vs BONUS2c (Table \ref{b2a_b2c}), BONUS2a vs BONUS2d (Table \ref{b2a_b2d}), 
+BONUS2b vs BONUS2c (Table \ref{b2b_b2c}), BONUS2b vs BONUS2d (Table \ref{b2b_b2d}), and BONUS2c vs BONUS2d (Table \ref{b2c_b2d}).
+
+Interesting findings from this analysis included the relative superiority of BONUS2a.
+It was found to be superior to BONUS2b (Table \ref{b2a_b2b}) and BONUS2d 
+(Table \ref{b2a_b2d}), dominating more configurations than any other configuration in the group.
+The only other configuration statistically proven to be better than another was BONUS2c
+when compared to BONUS2b (Table \ref{b2b_b2c}).
+
+The finding that BONUS2a was the most optimal configuration when compared to the other BONUS2 comparisons implies
+that when the controller multiplicity is maximum, i.e. when each unit shares a controller with all other units 
+of the same type, algorithm performance is optimal. One would hypothesize, however, that allowing units
+to employ different controllers would promote cooperation between units of a type. This behavior was by and large not
+observed as part of this experimentation. It is possible that more evaluations and a much larger population could
+produce this behavior more consistently.
 
 Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) for BONUS2* can be
 found in the \texttt{output} directory in the git repository.
