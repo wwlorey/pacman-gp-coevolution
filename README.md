@@ -8,8 +8,7 @@ For this assignment, the following bonus assignments were completed:
 * BONUS2a: Multiple pacmen employing the same controller, multiple ghosts employing the same controller
 * BONUS2b: Multiple pacmen employing different controllers, multiple ghosts employing the same controller
 * BONUS2c: Multiple pacmen employing the same controller, multiple ghosts employing different controllers
-
-[//]: <> (* BONUS2d: Multiple pacmen employing different controllers, multiple ghosts employing different controllers)
+* BONUS2d: Multiple pacmen employing different controllers, multiple ghosts employing different controllers
 
 To satisfy the above bonus assignments, configuration parameters
 were added to programmatically switch between pacman/ghost controller
