@@ -3,5 +3,5 @@ class ControllerIndividual:
         """Initializes the ControllerIndividual class."""
         self.fitness = fitness
 
-        # BONUS1, BONUS2*
+        # BONUS1, BONUS2
         self.conts = conts

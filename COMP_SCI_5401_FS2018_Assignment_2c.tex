@@ -61,7 +61,7 @@ The function nodes used for both the pacman and ghost controller trees were stan
 addition, subtraction, multiplication, division, and random (choose a random floating point number 
 within a given range). The implementation of these operations were straightforward except for division and
 random. For division, division by zero was protected for. If a number was to be divided by zero, the result
-would become zero. For the random operation, as implemented in python, a random selection made using a call
+would become zero. For the random operation, as implemented in Python, a random selection made using a call
 to the \texttt{random} library required the lower bound to be smaller than the upper bound. This was solved
 by always supplying the minimum floating point value as the lower bound and the maximum floating point value
 as the upper bound.
@@ -69,7 +69,7 @@ as the upper bound.
 Terminal nodes differed for the pacman and ghost controllers. The pacman controllers used the following terminal nodes: 
 Manhattan distance between pacman and the nearest ghost, Manhattan distance between pacman and the nearest pill, Manhattan
 distance between pacman and the nearest fruit, number of walls adjacent to pacman, a floating point constant, and Manhattan
-distance to the nearest other pacman (for the BONUS2* assignments). These nodes were implemented in accordance with the 
+distance to the nearest other pacman (for the BONUS2 assignments). These nodes were implemented in accordance with the 
 main assignment deliverables. One main comment about implementation particulars for the pacman nodes would be that if a fruit
 was not placed in the world, the distance to nearest fruit node would evaluate to a user-configurable arbitrary large number.
 Similarly for the ghost terminal nodes, which include the Manhattan distance to the nearest pacman, Manhattan distance to
@@ -406,7 +406,7 @@ to employ different controllers would promote cooperation between units of a typ
 observed as part of this experimentation. It is possible that more evaluations and a much larger population could
 produce this behavior more consistently.
 
-Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) for BONUS2* can be
+Note that all experiment results (log files, solution files for the pacman and ghosts, and world files) for BONUS2 can be
 found in the \texttt{output} directory in the git repository.
 
 \begin{figure}[H]

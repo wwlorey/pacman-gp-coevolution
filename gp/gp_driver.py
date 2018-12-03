@@ -104,7 +104,7 @@ class GPDriver:
             self.gpac_world_population.append(gpac_world_individual_class.GPacWorldIndividual(world, game_state))
 
 
-        # BONUS2*
+        # BONUS2
         if self.use_single_pacman_cont:
             num_pacman_conts = 1
 
@@ -115,7 +115,7 @@ class GPDriver:
             self.pacman_cont_population.append(cont_class.ControllerIndividual([pacman_cont_class.PacmanController(self.config) for _ in range(num_pacman_conts)]))
 
 
-        # BONUS1, BONUS2*
+        # BONUS1, BONUS2
         if self.use_single_ghost_cont:
             num_ghost_conts = 1
         
@@ -296,7 +296,7 @@ class GPDriver:
             """Performs sub-tree crossover on parent_a and parent_b returning the child tree."""
 
             def crossover_recursive(receiver_index, donator_index):
-                # BONUS1, BONUS2*
+                # BONUS1, BONUS2
                 if receiver_index < len(child_conts[cont_index].state_evaluator) and donator_index < len(parent_cont.state_evaluator):
                     return
                 
@@ -305,7 +305,7 @@ class GPDriver:
                 crossover_recursive(child_conts[cont_index].state_evaluator.get_right_child_index(receiver_index), parent_cont.state_evaluator.get_right_child_index(donator_index))
 
 
-            # BONUS1, BONUS2*
+            # BONUS1, BONUS2
             if unit_id == self.PACMAN_ID:
                 if self.config.settings.getboolean('use single pacman controller'):
                     num_conts = 1
@@ -374,7 +374,7 @@ class GPDriver:
 
         child_populations = (self.pacman_cont_children, self.ghost_cont_children)
 
-        # BONUS1, BONUS2*
+        # BONUS1, BONUS2
         for unit_id, child_population in enumerate(child_populations):
             for child in child_population:
                 for cont in child.conts:
@@ -458,7 +458,7 @@ class GPDriver:
 
         self.update_game_state(world_individual)
 
-        # BONUS1, BONUS2*
+        # BONUS1, BONUS2
         if self.use_single_pacman_cont:
             for pacman_index in range(self.num_pacmen):
                 world_individual.world.move_pacman(pacman_individual.conts[0].get_move(world_individual.game_state, pacman_index), pacman_index)
