@@ -1,3 +1,5 @@
+#### CS 5401 Evolutionary Computing | Coevolving controllers for pacman and the ghosts using genetic programming (GP)
+
 #################################
 # Notes on the BONUS Sections #
 #################################
@@ -19,6 +21,8 @@ have been included to satisfy the bonus assignment requirements.
 Additionally, code that differs as part of the main assignment implementation is noted 
 in the source code using comments (e.g. `# BONUS1`, `# BONUS2, or '# BONUS1, BONUS2` depending
 on what bonus the code satisfies).
+
+#### Provided README:
 
 #################################
 #	Coding Standards	#
